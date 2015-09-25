@@ -13,9 +13,13 @@
         android:id="@+id/adv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
     </comm.lib.uiutils.AdvViewPager>
-
+    <TextView
+        android:id="@+id/goodman"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="我是好人"
+        />
        <!-- <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
