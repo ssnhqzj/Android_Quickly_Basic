@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="gzt.com.commlib" >
+
+    <application
+        android:allowBackup="true"
+        android:label="@string/app_name" >
+        <activity
+            android:name="comm.lib.byaku.TouchImageActivity"
+            android:label="@string/title_activity_touch_image" >
+        </activity>
+        <activity
+            android:name="comm.lib.byaku.TouchImageViewPagerActivity"
+            android:label="@string/title_activity_touch_image_view_pager" >
+        </activity>
+        <activity
+            android:name="comm.lib.photoview.PhotoViewActivity"
+            android:label="@string/title_activity_photo_view" >
+        </activity>
+    </application>
+
+</manifest>

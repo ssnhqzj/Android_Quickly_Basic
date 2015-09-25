@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">CommLib</string>
+    <string name="title_activity_touch_image">TouchImageActivity</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_touch_image_view_pager">TouchImageViewPagerActivity</string>
+    <string name="title_activity_photo_view">PhotoViewActivity</string>
+</resources>
