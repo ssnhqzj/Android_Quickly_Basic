@@ -13,6 +13,7 @@ import com.jcodecraeer.xrecyclerview.XRecyclerView;
 
 import java.util.ArrayList;
 
+import gzt.com.apptest.Chat.adapter.ChatListAdapter;
 import gzt.com.apptest.Chat.bean.ChatItem;
 import gzt.com.apptest.Chat.face.FaceConversionUtil;
 import gzt.com.apptest.Chat.face.FaceRelativeLayout;

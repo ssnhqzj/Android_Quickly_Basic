@@ -1,4 +1,4 @@
-package gzt.com.apptest.Chat;
+package gzt.com.apptest.Chat.adapter;
 
 import android.content.Context;
 import android.graphics.Rect;
@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 import gzt.com.apptest.Chat.bean.ChatItem;
+import gzt.com.apptest.Chat.uitls.PopupWindowUtil;
 import gzt.com.apptest.Chat.viewholder.LeftTextHolder;
 import gzt.com.apptest.Chat.viewholder.RightTextHolder;
 
@@ -17,12 +18,15 @@ import gzt.com.apptest.Chat.viewholder.RightTextHolder;
  * 聊天室列表Adapter
  * Created by qzj on 15/12/7.
  */
-public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements
+        View.OnLongClickListener {
 
+    private Context context;
     public ArrayList<ChatItem> msgData = null;
     private LayoutInflater inflater = null;
 
     public ChatListAdapter(Context context, ArrayList<ChatItem> msgData) {
+        this.context = context;
         this.msgData = msgData;
         inflater = LayoutInflater.from(context);
     }
@@ -73,10 +77,12 @@ public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         switch (getItemViewType(position)){
             case ChatItem.LAYOUT_LEFT_TEXT:
                 ((LeftTextHolder)viewHolder).textContent.setText(msgData.get(position).getText());
+                ((LeftTextHolder)viewHolder).rootView.setOnLongClickListener(this);
                 break;
 
             case ChatItem.LAYOUT_RIGHT_TEXT:
                 ((RightTextHolder)viewHolder).textContent.setText(msgData.get(position).getText());
+                ((RightTextHolder)viewHolder).rootView.setOnLongClickListener(this);
                 break;
 
             case ChatItem.LAYOUT_LEFT_IMAGE:
@@ -95,6 +101,12 @@ public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
                 break;
         }
+    }
+
+    @Override
+    public boolean onLongClick(View v) {
+        PopupWindowUtil.openPopupWin(context,v);
+        return true;
     }
 
     public static class SpaceItemDecoration extends RecyclerView.ItemDecoration{
