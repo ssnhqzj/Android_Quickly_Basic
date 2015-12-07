@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!--<gzt.com.apptest.GuaGuaKaView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />-->
+
+    <!--<gzt.com.apptest.shader.ShaderView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="#66FF0000"/>-->
+
+    <!--<gzt.com.apptest.shader.ReflectView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />-->
+
+    <!--<gzt.com.apptest.WeixinMenu
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_centerInParent="true"/>-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="248dp"
+        android:background="#FF0000FF">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="click me"/>
+
+    </LinearLayout>
+
+    <gzt.com.apptest.customui.VscrollViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </gzt.com.apptest.customui.VscrollViewPager>
+
+</RelativeLayout>
