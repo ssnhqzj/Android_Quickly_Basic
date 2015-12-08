@@ -25,7 +25,7 @@
             android:layout_marginTop="8dp">
 
             <ImageView
-                android:id="@+id/btn_img"
+                android:id="@+id/btn_voice"
                 android:layout_width="30dip"
                 android:layout_height="30dip"
                 android:layout_alignParentLeft="true"
@@ -33,29 +33,37 @@
                 android:layout_marginLeft="8dip"
                 android:background="@android:color/transparent"
                 android:scaleType="centerInside"
-                android:src="@mipmap/comment_img" />
-
+                android:src="@mipmap/chat_voice" />
 
             <RelativeLayout
                 android:id="@+id/et_sendmessage_rl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_toLeftOf="@+id/btn_send"
-                android:layout_toRightOf="@+id/btn_img"
-                android:layout_toStartOf="@+id/btn_send"
+                android:layout_toRightOf="@+id/btn_voice"
                 android:background="@drawable/common_bg_gray_edit_buttom">
 
                 <gzt.com.apptest.Chat.face.PasteEditText
                     android:id="@+id/et_sendmessage"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
                     android:layout_toLeftOf="@+id/btn_face"
                     android:background="@android:color/transparent"
                     android:maxLines="3"
                     android:minHeight="35dp"
                     android:paddingLeft="5dp"
-                    android:paddingStart="5dp" />
+                    android:paddingStart="5dp"
+                    android:visibility="visible"/>
+
+                <TextView
+                    android:id="@+id/btn_press_say"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/btn_face"
+                    android:gravity="center"
+                    android:minHeight="35dp"
+                    android:text="按住 说话"
+                    android:visibility="gone"/>
 
                 <ImageView
                     android:id="@+id/btn_face"
@@ -86,12 +94,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
-            <!--&lt;!&ndash; 聊天输入框 &ndash;&gt;
-            <include
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                layout="@layout/custom_facerelativelayout" />-->
 
         </LinearLayout>
 

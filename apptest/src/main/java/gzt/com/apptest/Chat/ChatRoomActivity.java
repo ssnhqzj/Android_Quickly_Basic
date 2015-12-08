@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
@@ -46,7 +47,8 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
     private ImageView send;
     private PasteEditText msgEditText;
     private ImageView faceBtn;
-    private ImageView faceImg;
+    private ImageView voiceBtn;
+    private TextView pressSay;
     private LayoutInflater inflater;
 
     // 选择面板状态
@@ -78,24 +80,24 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
 
             @Override
             public void onLoadMore() {
-                    new Handler().postDelayed(new Runnable(){
-                        public void run() {
-                            mRecyclerView.loadMoreComplete();
-                            for(int i = 0; i < 10 ;i++){
-                                ChatItem item = new ChatItem();
-                                item.setItemId(i);
-                                if (i%2 == 0){
-                                    item.setLayoutType(ChatItem.LAYOUT_LEFT_TEXT);
-                                }else{
-                                    item.setLayoutType(ChatItem.LAYOUT_RIGHT_TEXT);
-                                }
-                                item.setText(new SpannableString("item" + (i + msgData.size())));
-                                msgData.add(item);
+                new Handler().postDelayed(new Runnable() {
+                    public void run() {
+                        mRecyclerView.loadMoreComplete();
+                        for (int i = 0; i < 10; i++) {
+                            ChatItem item = new ChatItem();
+                            item.setItemId(i);
+                            if (i % 2 == 0) {
+                                item.setLayoutType(ChatItem.LAYOUT_LEFT_TEXT);
+                            } else {
+                                item.setLayoutType(ChatItem.LAYOUT_RIGHT_TEXT);
                             }
-                            mAdapter.notifyDataSetChanged();
-                            mRecyclerView.refreshComplete();
+                            item.setText(new SpannableString("item" + (i + msgData.size())));
+                            msgData.add(item);
                         }
-                    }, 1000);
+                        mAdapter.notifyDataSetChanged();
+                        mRecyclerView.refreshComplete();
+                    }
+                }, 1000);
 
             }
         });
@@ -125,14 +127,17 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
         msgEditText = (PasteEditText) findViewById(R.id.et_sendmessage);
         send = (ImageView) findViewById(R.id.btn_send);
         faceBtn = (ImageView) findViewById(R.id.btn_face);
-        faceImg = (ImageView) findViewById(R.id.btn_img);
-        faceImg.setOnClickListener(this);
+        voiceBtn = (ImageView) findViewById(R.id.btn_voice);
+        pressSay = (TextView) findViewById(R.id.btn_press_say);
+        voiceBtn.setOnClickListener(this);
         faceBtn.setOnClickListener(this);
         send.setOnClickListener(this);
+        pressSay.setOnClickListener(this);
         msgEditText.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 DeviceUtils.showSoftKeyBoard(ChatRoomActivity.this,v);
+                hideAllBroads();
                 return false;
             }
         });
@@ -203,6 +208,28 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
                     chooseBroadState = VISIBLE_FACE;
                 }
                 break;
+
+            // 点击语音
+            case R.id.btn_voice:
+                if(chooseBroadState == VISIBLE_VOICE){
+                    chooseBroadState = VISIBLE_NONE;
+                    msgEditText.setVisibility(View.VISIBLE);
+                    pressSay.setVisibility(View.GONE);
+                }else{
+                    DeviceUtils.hideSoftKeyBoard(this,msgEditText);
+                    msgEditText.setVisibility(View.GONE);
+                    pressSay.setVisibility(View.VISIBLE);
+                    chooseBroadState = VISIBLE_VOICE;
+                }
+                break;
+        }
+    }
+
+    //隐藏所有面板
+    private void hideAllBroads(){
+        if (chooseBroad.getChildCount() > 0){
+            chooseBroad.removeAllViews();
+            chooseBroadState = VISIBLE_NONE;
         }
     }
 }
