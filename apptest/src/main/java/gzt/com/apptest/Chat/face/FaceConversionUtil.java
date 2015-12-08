@@ -25,7 +25,7 @@ public class FaceConversionUtil {
 	 */
 	private static final int FACE_SIZE = 28;
 	/** 每一页表情的个数 */
-	private int pageSize = 20;
+	private static int pageSize = 20;
 
 	private static FaceConversionUtil mFaceConversionUtil;
 
@@ -102,8 +102,7 @@ public class FaceConversionUtil {
 	 * @param start
 	 * @throws Exception
 	 */
-	private void dealExpression(Context context,
-			SpannableString spannableString, Pattern patten, int start)
+	private void dealExpression(Context context, SpannableString spannableString, Pattern patten, int start)
 			throws Exception {
 		Matcher matcher = patten.matcher(spannableString);
 		while (matcher.find()) {
@@ -116,14 +115,12 @@ public class FaceConversionUtil {
 			if (TextUtils.isEmpty(value)) {
 				continue;
 			}
-			int resId = context.getResources().getIdentifier(value, "mipmap",
-					context.getPackageName());
+			int resId = context.getResources().getIdentifier(value, "mipmap", context.getPackageName());
 			// 通过上面匹配得到的字符串来生成图片资源id
 			// Field field=R.drawable.class.getDeclaredField(value);
 			// int resId=Integer.parseInt(field.get(null).toString());
 			if (resId != 0) {
-				Bitmap bitmap = BitmapFactory.decodeResource(
-						context.getResources(), resId);
+				Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), resId);
 				bitmap = Bitmap.createScaledBitmap(bitmap, dip2px(context,FACE_SIZE), dip2px(context,FACE_SIZE), true);
 				// 通过图片资源id来得到bitmap，用一个ImageSpan来包装
 				ImageSpan imageSpan = new ImageSpan(context,bitmap);
@@ -141,7 +138,8 @@ public class FaceConversionUtil {
 		}
 	}
 
-	public void getFileText(Context context, FaceRelativeLayout faceRelativeLayout) {
+	public void getFileText(Context context, FaceRelativeLayout faceRelativeLayout, int pageFaceCount) {
+		pageSize = pageFaceCount;
 		ParseData(FileUtils.getEmojiFile(context), context);
 		faceRelativeLayout.onCreate();
 	}
@@ -161,12 +159,9 @@ public class FaceConversionUtil {
 		try {
 			for (String str : data) {
 				String[] text = str.split(",");
-				String fileName = text[0]
-						.substring(0, text[0].lastIndexOf("."));
+				String fileName = text[0].substring(0, text[0].lastIndexOf("."));
 				emojiMap.put(text[1], fileName);
-				int resID = context.getResources().getIdentifier(fileName,
-						"mipmap", context.getPackageName());
-
+				int resID = context.getResources().getIdentifier(fileName, "mipmap", context.getPackageName());
 				if (resID != 0) {
 					emojEentry = new ChatEmoji();
 					emojEentry.setId(resID);
@@ -224,4 +219,7 @@ public class FaceConversionUtil {
 		return (int) (dpValue * scale + 0.5f);
 	}
 
+	public static void setPageSize(int pageSize) {
+		FaceConversionUtil.pageSize = pageSize;
+	}
 }

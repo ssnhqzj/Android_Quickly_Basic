@@ -1,1 +1,1 @@
-include ':app', ':commlib', ':viewPagerIndicator'
+include ':app', ':commlib', ':viewPagerIndicator', ':apptest', ':xrecyclerview', ':face_comment'

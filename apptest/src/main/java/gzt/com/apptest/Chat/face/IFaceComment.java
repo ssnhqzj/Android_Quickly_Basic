@@ -1,5 +1,6 @@
 package gzt.com.apptest.Chat.face;
 
+import android.text.SpannableString;
 import android.view.View;
 import android.widget.EditText;
 
@@ -11,5 +12,6 @@ public interface IFaceComment {
     void editClick(View v);
     void faceOpening(View v);
     void sendMessage(EditText v);
-
+    void faceDelete(ChatEmoji emoji);
+    void faceItemSelected(SpannableString spannableString);
 }

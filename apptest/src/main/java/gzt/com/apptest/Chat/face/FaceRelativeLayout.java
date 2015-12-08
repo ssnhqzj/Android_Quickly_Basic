@@ -14,9 +14,9 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -27,16 +27,8 @@ import java.util.List;
 
 import gzt.com.apptest.R;
 
-public class FaceRelativeLayout extends RelativeLayout implements
-		OnItemClickListener, OnClickListener, View.OnFocusChangeListener {
+public class FaceRelativeLayout extends RelativeLayout implements OnItemClickListener, OnClickListener {
 	private Context context;
-	/**
-	 * 按钮事件监听
-	 */
-	private IFaceComment iFaceComment;
-
-	/** 表情页的监听事件 */
-	private OnCorpusSelectedListener mListener;
 
 	/** 显示表情页的viewpager */
 	private ViewPager vp_face;
@@ -56,19 +48,20 @@ public class FaceRelativeLayout extends RelativeLayout implements
 	/** 表情区域 */
 	private View view;
 
-	/** 输入框 */
-	private PasteEditText et_sendmessage;
+	private EditText editText;
 
 	/** 表情数据填充器 */
 	private List<FaceAdapter> faceAdapters;
 
-	private ImageView faceBtn;
+	private FaceRelativeLayout faceRelativeLayout;
 
 	/** 当前表情页 */
 	private int current = 0;
-	private ImageView faceimg;
-	private ImageView facesend;
-	private RelativeLayout et_sendmessage_bg;
+
+	private int pageRowNum = 3;
+	private int pageColumnNum;
+	private int pageFaceCount;
+	private int columnWidth;
 
 	public FaceRelativeLayout(Context context) {
 		super(context);
@@ -85,25 +78,6 @@ public class FaceRelativeLayout extends RelativeLayout implements
 		this.context = context;
 	}
 
-	public void setOnCorpusSelectedListener(OnCorpusSelectedListener listener) {
-		mListener = listener;
-	}
-
-	public void setiFaceComment(IFaceComment iFaceComment) {
-		this.iFaceComment = iFaceComment;
-	}
-
-	/**
-	 * 表情选择监听
-	 *
-	 */
-	public interface OnCorpusSelectedListener {
-
-		void onCorpusSelected(ChatEmoji emoji);
-
-		void onCorpusDeleted();
-	}
-
 	@Override
 	protected void onFinishInflate() {
 		super.onFinishInflate();
@@ -117,50 +91,14 @@ public class FaceRelativeLayout extends RelativeLayout implements
 	}
 
 	@Override
-	public void onClick(View v) {
-
-		int i = v.getId();
-		if (i == R.id.btn_face) {// 隐藏表情选择框
-			if (view.getVisibility() == View.VISIBLE) {
-				view.setVisibility(View.GONE);
-				faceBtn.setImageResource(R.mipmap.comment_face);
-			} else {
-				hideSoftKeyBoard(view);
-				view.setVisibility(View.VISIBLE);
-				faceBtn.setImageResource(R.mipmap.face_key_board);
-				et_sendmessage_bg.setBackgroundResource(R.drawable.common_bg_gray_edit_buttom_pressed);
+	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+		super.onSizeChanged(w, h, oldw, oldh);
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				FaceConversionUtil.getInstace().getFileText(getContext(), faceRelativeLayout, pageFaceCount);
 			}
-			if (iFaceComment!=null){
-				iFaceComment.faceOpening(v);
-			}
-
-		} else if (i == R.id.btn_img) {
-			if (iFaceComment!=null){
-				iFaceComment.sendImage(v);
-			}
-		} else if (i == R.id.btn_send) {
-			if (iFaceComment!=null){
-				iFaceComment.sendMessage(et_sendmessage);
-			}
-
-		} else if (i == R.id.et_sendmessage) {// 隐藏表情选择框
-			et_sendmessage_bg.setBackgroundResource(R.drawable.common_bg_gray_edit_buttom_pressed);
-			if (view.getVisibility() == View.VISIBLE) {
-				view.setVisibility(View.GONE);
-				faceBtn.setImageResource(R.mipmap.comment_face);
-			}
-			if (iFaceComment!=null){
-				iFaceComment.editClick(v);
-			}
-
-		}
-	}
-
-	@Override
-	public void onFocusChange(View v, boolean hasFocus) {
-		if(hasFocus){
-			view.setVisibility(View.GONE);
-		}
+		}).start();
 	}
 
 	/**
@@ -179,20 +117,10 @@ public class FaceRelativeLayout extends RelativeLayout implements
 	 * 初始化控件
 	 */
 	private void Init_View() {
+		faceRelativeLayout = (FaceRelativeLayout) findViewById(R.id.FaceRelativeLayout);
 		vp_face = (ViewPager) findViewById(R.id.vp_contains);
-		et_sendmessage = (PasteEditText) findViewById(R.id.et_sendmessage);
-		et_sendmessage_bg=(RelativeLayout)findViewById(R.id.et_sendmessage_rl);
 		layout_point = (LinearLayout) findViewById(R.id.iv_image);
-		et_sendmessage.setOnClickListener(this);
-		et_sendmessage.setOnFocusChangeListener(this);
-		faceBtn = (ImageView) findViewById(R.id.btn_face);
-		faceimg = (ImageView) findViewById(R.id.btn_img);
-		facesend = (ImageView) findViewById(R.id.btn_send);
-		faceimg.setOnClickListener(this);
-		facesend.setOnClickListener(this);
-		faceBtn.setOnClickListener(this);
 		view = findViewById(R.id.ll_facechoose);
-
 	}
 
 	/**
@@ -208,13 +136,14 @@ public class FaceRelativeLayout extends RelativeLayout implements
 
 		// 中间添加表情页
 		faceAdapters = new ArrayList<FaceAdapter>();
+
 		for (int i = 0; i < emojis.size(); i++) {
 			GridView view = new GridView(context);
-			FaceAdapter adapter = new FaceAdapter(context, emojis.get(i));
+			FaceAdapter adapter = new FaceAdapter(context, emojis.get(i), columnWidth);
 			view.setAdapter(adapter);
 			faceAdapters.add(adapter);
 			view.setOnItemClickListener(this);
-			view.setNumColumns(7);
+			view.setNumColumns(pageColumnNum);
 			view.setBackgroundColor(Color.TRANSPARENT);
 			view.setHorizontalSpacing(1);
 			view.setVerticalSpacing(1);
@@ -222,8 +151,7 @@ public class FaceRelativeLayout extends RelativeLayout implements
 			view.setCacheColorHint(0);
 			view.setPadding(5, 0, 5, 0);
 			view.setSelector(new ColorDrawable(Color.TRANSPARENT));
-			view.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,
-					LayoutParams.WRAP_CONTENT));
+			view.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT));
 			view.setGravity(Gravity.CENTER);
 			pageViews.add(view);
 		}
@@ -240,6 +168,20 @@ public class FaceRelativeLayout extends RelativeLayout implements
 	 */
 	private void Init_Point() {
 		handler.sendEmptyMessage(1);
+	}
+
+	@Override
+	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+		for (int i=0; i<getChildCount(); i++){
+			if (getChildAt(i).getId() == R.id.ll_facechoose){
+				int chooseWidth = getChildAt(i).getMeasuredWidth();
+				int chooseHeight = getChildAt(i).getMeasuredHeight();
+				columnWidth = chooseHeight/pageRowNum;
+				pageColumnNum = chooseWidth/columnWidth;
+				pageFaceCount = pageRowNum * pageColumnNum - 1;
+			}
+		}
 	}
 
 	Handler handler = new Handler(){
@@ -330,45 +272,38 @@ public class FaceRelativeLayout extends RelativeLayout implements
 	}
 
 	@Override
+	public void onClick(View v) {
+		switch (v.getId()){
+
+		}
+	}
+
+	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 		ChatEmoji emoji = (ChatEmoji) faceAdapters.get(current).getItem(arg2);
 		if (emoji.getId() == R.drawable.face_del_icon) {
-			int selection = et_sendmessage.getSelectionStart();
-			String text = et_sendmessage.getText().toString();
+			int selection = editText.getSelectionStart();
+			String text = editText.getText().toString();
 			if (selection > 0) {
 				String text2 = text.substring(selection - 1);
 				if ("]".equals(text2)) {
 					int start = text.lastIndexOf("[");
 					int end = selection;
-					et_sendmessage.getText().delete(start, end);
+					editText.getText().delete(start, end);
 					return;
 				}
-				et_sendmessage.getText().delete(selection - 1, selection);
+				editText.getText().delete(selection - 1, selection);
 			}
 		}
 		if (!TextUtils.isEmpty(emoji.getCharacter())) {
-			if (mListener != null)
-				mListener.onCorpusSelected(emoji);
 			SpannableString spannableString = FaceConversionUtil.getInstace()
 					.addFace(getContext(), emoji.getId(), emoji.getCharacter());
-			et_sendmessage.append(spannableString);
+			editText.append(spannableString);
 		}
 
 	}
 
-
-	private void toggleSoftKeyBoard(){
-		InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-		imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_NOT_ALWAYS);
-	}
-
-	private void hideSoftKeyBoard(View view){
-		InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
-		imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-	}
-
-	private void showSoftKeyBoard(View view){
-		InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-		imm.showSoftInput(view, 0);
+	public void setEditText(EditText editText) {
+		this.editText = editText;
 	}
 }

@@ -564,8 +564,14 @@ public abstract class Request<T> implements Comparable<Request<T>> {
     }
 
     /**
+     * 比较器按优先级从高到底排序，其次按先进先出的原则
      * Our comparator sorts from high to low priority, and secondarily by
      * sequence number to provide FIFO ordering.
+     *
+     * return
+     * 返回一个负整数：优先级高于other
+     * 返回一个正整数：优先级低于other
+     * 返回0：相同的优先级
      */
     @Override
     public int compareTo(Request<T> other) {

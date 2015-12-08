@@ -3,17 +3,16 @@ package com.gjt.view;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.gjt.R;
-import com.gjt.common.utils.DisplayUtils;
 import com.gjt.common.utils.Logger;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnItemSelected;
 import comm.lib.downloader.DownloadListener;
-import comm.lib.uiutils.AdvViewPager;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -26,13 +25,16 @@ public class MainActivity extends ActionBarActivity {
             "http://img6.faloo.com/Picture/0x0/0/747/747488.jpg"};
     TextView title;
 
+    @Bind(R.id.list_view)
+    ListView listView;
+
     //注解框架中API==http://jakewharton.github.io/butterknife/         Studio插件：Zelezny
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        goodman.setText("我是个好人哟");
+//        goodman.setText("我是个好人哟");
 //        test = (ImageView) findViewById(R.id.main_test);
 //        VolleyUtil.getInstance(this).initImageLoader().loadImage(test,testUr,400,400,true);
 //        FileLoadUtils.getInstance(this).initDownLoader().downLoad(testUrl,listener,null);
@@ -58,7 +60,7 @@ public class MainActivity extends ActionBarActivity {
             views[i] = imageView;
         }*/
 
-        AdvViewPager adv = (AdvViewPager) findViewById(R.id.adv);
+        /*AdvViewPager adv = (AdvViewPager) findViewById(R.id.adv);
         adv.setAdvWidthAndHeight(DisplayUtils.getDisplayWidth(this), DisplayUtils.getDisplayWidth(this) * 9 / 16);
         adv.setTipGravity(RelativeLayout.ALIGN_PARENT_RIGHT);
         adv.setTipsMargin(0, 0, 0, 5);
@@ -69,6 +71,29 @@ public class MainActivity extends ActionBarActivity {
                 Logger.e("qzj", ">>>>>>>>>>>>>>position>>>>>>>>>>>" + position);
             }
         });
+        ArrayList<String> lists =new ArrayList<>();
+        for (int i = 0; i < 100; i++) {
+            lists.add(i+"");
+        }
+        ArrayAdapter<String> adapter =new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,lists);
+        listView.setAdapter(adapter);*/
+        /*listView.setItemsCanFocus(true);
+        listView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Logger.e("qzj",">>>>>>>>>>>>>>>onItemSelected>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                Logger.e("qzj",">>>>>>>>>>>>>>>>>onNothingSelected>>>>>>>>>>>>>>>>>>>>>>>>>");
+            }
+        });*/
+    }
+
+    @OnItemSelected(R.id.list_view)
+    void OnItemSelected(int position){
+        Logger.e("qzj",">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
     }
 
     DownloadListener listener = new DownloadListener() {
@@ -87,4 +112,6 @@ public class MainActivity extends ActionBarActivity {
             Logger.e("qzj", ">>>>>>>>>>>>>>>>>" + values.toString());
         }
     };
+
+
 }

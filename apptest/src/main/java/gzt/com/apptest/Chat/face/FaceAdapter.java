@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.GridView;
 import android.widget.ImageView;
 
 import java.util.List;
@@ -20,7 +21,10 @@ public class FaceAdapter extends BaseAdapter {
 
     private int size=0;
 
-    public FaceAdapter(Context context, List<ChatEmoji> list) {
+    private int itemWidth;
+
+    public FaceAdapter(Context context, List<ChatEmoji> list, int itemWidth) {
+        this.itemWidth = itemWidth;
         this.inflater=LayoutInflater.from(context);
         this.data=list;
         this.size=list.size();
@@ -48,6 +52,8 @@ public class FaceAdapter extends BaseAdapter {
         if(convertView == null) {
             viewHolder=new ViewHolder();
             convertView=inflater.inflate(R.layout.item_face, null);
+            GridView.LayoutParams params = new GridView.LayoutParams(itemWidth,itemWidth);
+            convertView.setLayoutParams(params);
             viewHolder.iv_face=(ImageView)convertView.findViewById(R.id.item_iv_face);
             convertView.setTag(viewHolder);
         } else {
