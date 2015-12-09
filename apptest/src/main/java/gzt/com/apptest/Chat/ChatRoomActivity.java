@@ -37,14 +37,17 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
     // 声音面板显示
     private static final int VISIBLE_VOICE = 3;
 
+    private static View faceBroadView;
+    private static View imageBroadView;
+
     private XRecyclerView mRecyclerView;
     private ChatListAdapter mAdapter;
     private ArrayList<ChatItem> msgData;
 
     private LinearLayout inputBroad;
     private LinearLayout chooseBroad;
-    private static View faceBroadView;
-    private ImageView send;
+    private TextView send;
+    private ImageView imageBtn;
     private PasteEditText msgEditText;
     private ImageView faceBtn;
     private ImageView voiceBtn;
@@ -125,14 +128,16 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
      */
     private void initBroadView(){
         msgEditText = (PasteEditText) findViewById(R.id.et_sendmessage);
-        send = (ImageView) findViewById(R.id.btn_send);
+        send = (TextView) findViewById(R.id.btn_send);
         faceBtn = (ImageView) findViewById(R.id.btn_face);
         voiceBtn = (ImageView) findViewById(R.id.btn_voice);
         pressSay = (TextView) findViewById(R.id.btn_press_say);
+        imageBtn = (ImageView) findViewById(R.id.btn_image);
         voiceBtn.setOnClickListener(this);
         faceBtn.setOnClickListener(this);
         send.setOnClickListener(this);
         pressSay.setOnClickListener(this);
+        imageBtn.setOnClickListener(this);
         msgEditText.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -192,14 +197,15 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
                 mAdapter.notifyDataSetChanged();
                 break;
 
-            // 点击表情
+            // 选择表情
             case R.id.btn_face:
-                if (chooseBroadState == VISIBLE_FACE){
-                    chooseBroad.removeView(faceBroadView);
-                    chooseBroadState = VISIBLE_NONE;
-                }else{
+                if (chooseBroad.getChildCount()>0){
+                    hideAllBroads();
+                }
+
+                if(chooseBroadState != VISIBLE_FACE){
                     if (faceBroadView == null){
-                        faceBroadView = inflater.inflate(R.layout.custom_facerelativelayout,null);
+                        faceBroadView = inflater.inflate(R.layout.chat_broad_face,null);
                         FaceRelativeLayout faceLayout = (FaceRelativeLayout) faceBroadView.findViewById(R.id.FaceRelativeLayout);
                         faceLayout.setEditText(msgEditText);
                     }
@@ -209,7 +215,7 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
                 }
                 break;
 
-            // 点击语音
+            // 选择语音
             case R.id.btn_voice:
                 if(chooseBroadState == VISIBLE_VOICE){
                     chooseBroadState = VISIBLE_NONE;
@@ -220,6 +226,22 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
                     msgEditText.setVisibility(View.GONE);
                     pressSay.setVisibility(View.VISIBLE);
                     chooseBroadState = VISIBLE_VOICE;
+                }
+                break;
+
+            // 选择图片
+            case R.id.btn_image:
+                if (chooseBroad.getChildCount()>0){
+                    hideAllBroads();
+                }
+
+                if(chooseBroadState != VISIBLE_IMAGE){
+                    if (imageBroadView == null){
+                        imageBroadView = inflater.inflate(R.layout.chat_broad_image,null);
+                    }
+                    DeviceUtils.hideSoftKeyBoard(this,msgEditText);
+                    chooseBroad.addView(imageBroadView);
+                    chooseBroadState = VISIBLE_IMAGE;
                 }
                 break;
         }
