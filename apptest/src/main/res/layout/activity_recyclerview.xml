@@ -65,15 +65,15 @@
                     android:text="按住 说话"
                     android:visibility="gone"/>
 
-                <ImageView
+                <CheckBox
                     android:id="@+id/btn_face"
                     android:layout_width="30dip"
                     android:layout_height="30dip"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:paddingBottom="2dp"
-                    android:scaleType="centerInside"
-                    android:src="@mipmap/comment_face" />
+                    style="@style/ChatFaceCheckboxStyle"/>
+
             </RelativeLayout>
 
             <RelativeLayout
@@ -110,6 +110,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
 
         </LinearLayout>
 

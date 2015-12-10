@@ -10,7 +10,7 @@
     <RelativeLayout
         android:id="@+id/ll_facechoose"
         android:layout_width="wrap_content"
-        android:layout_height="200dp"
+        android:layout_height="match_parent"
         android:visibility="visible">
 
         <android.support.v4.view.ViewPager

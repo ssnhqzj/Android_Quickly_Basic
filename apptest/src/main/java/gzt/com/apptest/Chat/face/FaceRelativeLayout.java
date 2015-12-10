@@ -25,6 +25,7 @@ import android.widget.RelativeLayout;
 import java.util.ArrayList;
 import java.util.List;
 
+import gzt.com.apptest.Chat.uitls.DisplayUtils;
 import gzt.com.apptest.R;
 
 public class FaceRelativeLayout extends RelativeLayout implements OnItemClickListener, OnClickListener {
@@ -58,6 +59,7 @@ public class FaceRelativeLayout extends RelativeLayout implements OnItemClickLis
 	/** 当前表情页 */
 	private int current = 0;
 
+	private int broadHeight;
 	private int pageRowNum = 3;
 	private int pageColumnNum;
 	private int pageFaceCount;
@@ -173,15 +175,12 @@ public class FaceRelativeLayout extends RelativeLayout implements OnItemClickLis
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-		for (int i=0; i<getChildCount(); i++){
-			if (getChildAt(i).getId() == R.id.ll_facechoose){
-				int chooseWidth = getChildAt(i).getMeasuredWidth();
-				int chooseHeight = getChildAt(i).getMeasuredHeight();
-				columnWidth = chooseHeight/pageRowNum;
-				pageColumnNum = chooseWidth/columnWidth;
-				pageFaceCount = pageRowNum * pageColumnNum - 1;
-			}
-		}
+//		for (int i=0; i<getChildCount(); i++){
+//			if (getChildAt(i).getId() == R.id.ll_facechoose){
+//				int chooseWidth = getChildAt(i).getMeasuredWidth();
+//				int chooseHeight = getChildAt(i).getMeasuredHeight();
+//			}
+//		}
 	}
 
 	Handler handler = new Handler(){
@@ -305,5 +304,12 @@ public class FaceRelativeLayout extends RelativeLayout implements OnItemClickLis
 
 	public void setEditText(EditText editText) {
 		this.editText = editText;
+	}
+
+	public void setBroadHeight(int broadHeight) {
+		this.broadHeight = broadHeight;
+		columnWidth = broadHeight/pageRowNum;
+		pageColumnNum = DisplayUtils.getDisplayWidth(context)/columnWidth;
+		pageFaceCount = pageRowNum * pageColumnNum - 1;
 	}
 }

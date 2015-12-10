@@ -22,4 +22,9 @@
         <item name="android:windowExitAnimation">@anim/popup_exit</item>
     </style>
 
+    <!--聊天室表情选择按钮样式-->
+    <style name="ChatFaceCheckboxStyle" parent="@android:style/Widget.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/chat_face_selector</item>
+    </style>
+
 </resources>
