@@ -3,6 +3,7 @@ package gzt.com.apptest.Chat.uitls;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -79,4 +80,41 @@ public class DeviceUtils {
         }
     }
 
+    /**
+     * 判断当前触摸点是否在v上
+     * @param ev
+     * @param v
+     * @return
+     */
+    public static boolean isTouchThisView(MotionEvent ev, View v) {
+        if (v != null) {
+            int[] leftTop = { 0, 0 };
+            //获取输入框当前的location位置
+            v.getLocationInWindow(leftTop);
+            int left = leftTop[0];
+            int top = leftTop[1];
+            int bottom = top + v.getHeight();
+            int right = left + v.getWidth();
+            if ( ev.getY()>top && ev.getY()<bottom && ev.getX()>left && ev.getX()<right) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return false;
+    }
+
+    //        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+//            View v = getCurrentFocus();
+//            Log.e("qzj", isShouldHideInput(v, ev) + "");
+//            if (isShouldHideInput(v, ev)) {
+//                DeviceUtils.hideSoftKeyBoard(this,v);
+//            }
+//            return super.dispatchTouchEvent(ev);
+//        }
+//        // 必不可少，否则所有的组件都不会有TouchEvent了
+//        if (getWindow().superDispatchTouchEvent(ev)) {
+//            return true;
+//        }
+//        return onTouchEvent(ev);
 }

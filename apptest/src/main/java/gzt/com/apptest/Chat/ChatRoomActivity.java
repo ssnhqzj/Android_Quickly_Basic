@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -48,6 +47,7 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
 
     private static View faceBroadView;
     private static View imageBroadView;
+    private boolean faceBtnChecked;
 
     private XRecyclerView mRecyclerView;
     private ChatListAdapter mAdapter;
@@ -146,17 +146,6 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
         send.setOnClickListener(this);
         pressSay.setOnClickListener(this);
         imageBtn.setOnClickListener(this);
-        msgEditText.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    Log.e("qzj", "et_sendmessage: clicked");
-                    DeviceUtils.isAdjustWindow(ChatRoomActivity.this, true);
-                    setChooseBroadHeight(0);
-                }
-                return false;
-            }
-        });
         msgEditText.setClickable(true);
         keyBroadHeight = DeviceUtils.getKeyBroadHeight(this);
         Log.e("qzj", "init keyBroadHeight = " + keyBroadHeight);
@@ -165,67 +154,44 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onGlobalLayout() {
                 Rect r = new Rect();
-                //获取当前界面可视部分
                 ChatRoomActivity.this.getWindow().getDecorView().getWindowVisibleDisplayFrame(r);
-                //获取屏幕的高度
                 int screenHeight = ChatRoomActivity.this.getWindow().getDecorView().getRootView().getHeight();
-                //此处就是用来获取键盘的高度的， 在键盘没有弹出的时候 此高度为0 键盘弹出的时候为一个正数
                 int heightDifference = screenHeight - r.bottom;
-                Log.e("qzj", "Keyboard Size: " + heightDifference);
-                // 软键盘显示
+                Log.e("qzj", "----------获取到键盘高度------------: " + heightDifference);
                 if (heightDifference > 0) {
-                    handler.obtainMessage(1).sendToTarget();
                     if (keyBroadHeight != heightDifference) keyBroadHeight = heightDifference;
-                } else { // 软键盘隐藏
-//                    setChooseBroadHeight(0);
+                } else {
+
                 }
             }
         });
-//        msgEditText.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                DeviceUtils.showSoftKeyBoard(ChatRoomActivity.this, v);
-//                removeAllBroads();
-//                return false;
-//            }
-//        });
     }
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-//        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-//            View v = getCurrentFocus();
-//            Log.e("qzj", isShouldHideInput(v, ev) + "");
-//            if (isShouldHideInput(v, ev)) {
-//                DeviceUtils.hideSoftKeyBoard(this,v);
-//            }
-//            return super.dispatchTouchEvent(ev);
-//        }
-//        // 必不可少，否则所有的组件都不会有TouchEvent了
-//        if (getWindow().superDispatchTouchEvent(ev)) {
-//            return true;
-//        }
-//        return onTouchEvent(ev);
-        return super.dispatchTouchEvent(ev);
-    }
-
-    private boolean isShouldHideInput(View v, MotionEvent event) {
-        if (v != null && (v instanceof EditText)) {
-            int[] leftTop = { 0, 0 };
-            //获取输入框当前的location位置
-            v.getLocationInWindow(leftTop);
-            int left = leftTop[0];
-            int top = leftTop[1];
-            int bottom = top + v.getHeight();
-            int right = left + v.getWidth();
-            if ( event.getY() > top && event.getY() < bottom) {
-                // 点击的是输入框区域，保留点击EditText的事件
-                return false;
-            } else {
-                return true;
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            // 触摸EditText
+            if (DeviceUtils.isTouchThisView(ev,msgEditText)){
+                DeviceUtils.isAdjustWindow(ChatRoomActivity.this, true);
+                DeviceUtils.showSoftKeyBoard(this, msgEditText);
+                setChooseBroadHeight(0);
+                faceBtn.setChecked(false);
+            } // 触摸face button
+            else if(DeviceUtils.isTouchThisView(ev,faceBtn)){
+                Log.e("qzj", ">>>>>>>>>>>>>face btn touch...>>>>>>>>>>>>");
+                DeviceUtils.isAdjustWindow(ChatRoomActivity.this, false);
+                setChooseBroadHeight(keyBroadHeight);
+                chooseBroad.requestLayout();
+                if (!faceBtnChecked){
+                    faceBtn.setChecked(true);
+                    faceBtnChecked = true;
+                }else{
+                    faceBtn.setChecked(false);
+                    faceBtnChecked = false;
+                }
             }
         }
-        return true;
+        return super.dispatchTouchEvent(ev);
     }
 
     @Override
@@ -271,9 +237,8 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        Log.e("qzj", "face isChecked: " + isChecked);
+        Log.e("qzj", "----------onCheckedChanged------"+isChecked);
         if (isChecked){
-            DeviceUtils.isAdjustWindow(this,false);
             removeAllBroads();
             if (faceBroadView == null){
                 faceBroadView = inflater.inflate(R.layout.chat_broad_face,null);
@@ -286,26 +251,15 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
             }
             chooseBroad.addView(faceBroadView);
             DeviceUtils.hideSoftKeyBoard(this, msgEditText);
-            setChooseBroadHeight(keyBroadHeight);
+            chooseBroad.requestLayout();
         }else{
-            DeviceUtils.showSoftKeyBoard(this, msgEditText);
+            DeviceUtils.isAdjustWindow(ChatRoomActivity.this, true);
+            msgEditText.requestFocus();
+            DeviceUtils.showSoftKeyBoard(ChatRoomActivity.this, msgEditText);
             setChooseBroadHeight(0);
+//            chooseBroad.requestLayout();
         }
     }
-
-    Handler handler = new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what){
-                case 1:
-                    setChooseBroadHeight(keyBroadHeight);
-                    break;
-                case 2:
-                    setChooseBroadHeight(0);
-                    break;
-            }
-        }
-    };
 
     //隐藏所有面板
     private void removeAllBroads(){
@@ -323,5 +277,16 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) chooseBroad.getLayoutParams();
         params.height = height;
     }
+
+    Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case 1:
+                    setChooseBroadHeight(keyBroadHeight);
+                    break;
+            }
+        }
+    };
 
 }

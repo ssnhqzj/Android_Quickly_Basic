@@ -172,17 +172,6 @@ public class FaceRelativeLayout extends RelativeLayout implements OnItemClickLis
 		handler.sendEmptyMessage(1);
 	}
 
-	@Override
-	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-//		for (int i=0; i<getChildCount(); i++){
-//			if (getChildAt(i).getId() == R.id.ll_facechoose){
-//				int chooseWidth = getChildAt(i).getMeasuredWidth();
-//				int chooseHeight = getChildAt(i).getMeasuredHeight();
-//			}
-//		}
-	}
-
 	Handler handler = new Handler(){
 		@Override
 		public void handleMessage(Message msg) {
