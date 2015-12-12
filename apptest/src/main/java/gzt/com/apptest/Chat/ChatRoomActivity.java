@@ -2,8 +2,6 @@ package gzt.com.apptest.Chat;
 
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.SpannableString;
@@ -11,7 +9,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -27,20 +24,11 @@ import java.util.ArrayList;
 import gzt.com.apptest.Chat.adapter.ChatListAdapter;
 import gzt.com.apptest.Chat.bean.ChatItem;
 import gzt.com.apptest.Chat.face.FaceConversionUtil;
-import gzt.com.apptest.Chat.face.FaceRelativeLayout;
 import gzt.com.apptest.Chat.face.PasteEditText;
 import gzt.com.apptest.Chat.uitls.DeviceUtils;
 import gzt.com.apptest.R;
 
 public class ChatRoomActivity extends AppCompatActivity implements View.OnClickListener,CompoundButton.OnCheckedChangeListener {
-    // 表情面板空
-    private static final int VISIBLE_NONE = 0;
-    // 表情面板显示
-    private static final int VISIBLE_FACE = 1;
-    // 图片面板显示
-    private static final int VISIBLE_IMAGE = 2;
-    // 声音面板显示
-    private static final int VISIBLE_VOICE = 3;
 
     // 键盘高度
     private static int keyBroadHeight;
@@ -62,9 +50,10 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
     private ImageView voiceBtn;
     private TextView pressSay;
     private LayoutInflater inflater;
-
-    // 选择面板状态
-    private int chooseBroadState;
+    // 界面是否被压缩
+    private boolean isSoftBroadShown;
+    // 选择面板是否展开
+    private boolean isChooseShown;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,24 +80,6 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
 
             @Override
             public void onLoadMore() {
-                new Handler().postDelayed(new Runnable() {
-                    public void run() {
-                        mRecyclerView.loadMoreComplete();
-                        for (int i = 0; i < 10; i++) {
-                            ChatItem item = new ChatItem();
-                            item.setItemId(i);
-                            if (i % 2 == 0) {
-                                item.setLayoutType(ChatItem.LAYOUT_LEFT_TEXT);
-                            } else {
-                                item.setLayoutType(ChatItem.LAYOUT_RIGHT_TEXT);
-                            }
-                            item.setText(new SpannableString("item" + (i + msgData.size())));
-                            msgData.add(item);
-                        }
-                        mAdapter.notifyDataSetChanged();
-                        mRecyclerView.refreshComplete();
-                    }
-                }, 1000);
 
             }
         });
@@ -142,55 +113,49 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
         pressSay = (TextView) findViewById(R.id.btn_press_say);
         imageBtn = (ImageView) findViewById(R.id.btn_image);
         voiceBtn.setOnClickListener(this);
-        faceBtn.setOnCheckedChangeListener(this);
         send.setOnClickListener(this);
         pressSay.setOnClickListener(this);
         imageBtn.setOnClickListener(this);
         msgEditText.setClickable(true);
+        faceBtn.setOnCheckedChangeListener(this);
         keyBroadHeight = DeviceUtils.getKeyBroadHeight(this);
         Log.e("qzj", "init keyBroadHeight = " + keyBroadHeight);
-        // 监听界面高度的变化
-        msgEditText.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+        msgEditText.getViewTreeObserver().addOnGlobalLayoutListener(new SoftBroadChangeListener());
+        msgEditText.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onGlobalLayout() {
-                Rect r = new Rect();
-                ChatRoomActivity.this.getWindow().getDecorView().getWindowVisibleDisplayFrame(r);
-                int screenHeight = ChatRoomActivity.this.getWindow().getDecorView().getRootView().getHeight();
-                int heightDifference = screenHeight - r.bottom;
-                Log.e("qzj", "----------获取到键盘高度------------: " + heightDifference);
-                if (heightDifference > 0) {
-                    if (keyBroadHeight != heightDifference) keyBroadHeight = heightDifference;
-                } else {
-
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()){
+                    case MotionEvent.ACTION_DOWN:
+                        Log.e("qzj", ">>>>>>>>EditText onTouch>>>>>>>>>>");
+                        // 只要触摸了EditText都要设置成可调整
+                        faceBtn.setChecked(false);
+                        isSoftBroadShown = true;
+                        DeviceUtils.isAdjustWindow(ChatRoomActivity.this, true);
+                        break;
                 }
+
+                return false;
             }
         });
     }
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-            // 触摸EditText
-            if (DeviceUtils.isTouchThisView(ev,msgEditText)){
-                DeviceUtils.isAdjustWindow(ChatRoomActivity.this, true);
-                DeviceUtils.showSoftKeyBoard(this, msgEditText);
-                setChooseBroadHeight(0);
-                faceBtn.setChecked(false);
-            } // 触摸face button
-            else if(DeviceUtils.isTouchThisView(ev,faceBtn)){
-                Log.e("qzj", ">>>>>>>>>>>>>face btn touch...>>>>>>>>>>>>");
-                DeviceUtils.isAdjustWindow(ChatRoomActivity.this, false);
-                setChooseBroadHeight(keyBroadHeight);
-                chooseBroad.requestLayout();
-                if (!faceBtnChecked){
-                    faceBtn.setChecked(true);
-                    faceBtnChecked = true;
-                }else{
-                    faceBtn.setChecked(false);
-                    faceBtnChecked = false;
-                }
-            }
-        }
+//        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+//            // 触摸EditText
+//            if (DeviceUtils.isTouchThisView(ev,msgEditText)){
+//                DeviceUtils.isAdjustWindow(ChatRoomActivity.this, true);
+//                DeviceUtils.showSoftKeyBoard(this, msgEditText);
+//                setChooseBroadHeight(0);
+//                faceBtn.setChecked(false);
+//            } // 触摸face button
+//            else if(DeviceUtils.isTouchThisView(ev,faceBtn)){
+//                Log.e("qzj", ">>>>>>>>>>>>>face btn touch...>>>>>>>>>>>>");
+//                DeviceUtils.isAdjustWindow(ChatRoomActivity.this, false);
+//                setChooseBroadHeight(keyBroadHeight);
+//                chooseBroad.requestLayout();
+//            }
+//        }
         return super.dispatchTouchEvent(ev);
     }
 
@@ -207,59 +172,9 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
                 mAdapter.notifyDataSetChanged();
                 break;
 
-            // 选择语音
-            case R.id.btn_voice:
-                if(chooseBroadState == VISIBLE_VOICE){
-                    chooseBroadState = VISIBLE_NONE;
-                    msgEditText.setVisibility(View.VISIBLE);
-                    pressSay.setVisibility(View.GONE);
-                }else{
-                    DeviceUtils.hideSoftKeyBoard(this,msgEditText);
-                    msgEditText.setVisibility(View.GONE);
-                    pressSay.setVisibility(View.VISIBLE);
-                    chooseBroadState = VISIBLE_VOICE;
-                }
-                break;
-
-            // 选择图片
-            case R.id.btn_image:
-                /*if(chooseBroadState != VISIBLE_IMAGE){
-                    if (imageBroadView == null){
-                        imageBroadView = inflater.inflate(R.layout.chat_broad_image,null);
-                    }
-                    DeviceUtils.hideSoftKeyBoard(this,msgEditText);
-                    chooseBroad.addView(imageBroadView);
-                    chooseBroadState = VISIBLE_IMAGE;
-                }*/
-                break;
         }
     }
 
-    @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        Log.e("qzj", "----------onCheckedChanged------"+isChecked);
-        if (isChecked){
-            removeAllBroads();
-            if (faceBroadView == null){
-                faceBroadView = inflater.inflate(R.layout.chat_broad_face,null);
-                FaceRelativeLayout faceLayout = (FaceRelativeLayout) faceBroadView.findViewById(R.id.FaceRelativeLayout);
-                faceLayout.setEditText(msgEditText);
-                faceLayout.setBroadHeight(keyBroadHeight);
-            }
-            if (faceBroadView.getParent()!=null){
-                ((ViewGroup)faceBroadView.getParent()).removeView(faceBroadView);
-            }
-            chooseBroad.addView(faceBroadView);
-            DeviceUtils.hideSoftKeyBoard(this, msgEditText);
-            chooseBroad.requestLayout();
-        }else{
-            DeviceUtils.isAdjustWindow(ChatRoomActivity.this, true);
-            msgEditText.requestFocus();
-            DeviceUtils.showSoftKeyBoard(ChatRoomActivity.this, msgEditText);
-            setChooseBroadHeight(0);
-//            chooseBroad.requestLayout();
-        }
-    }
 
     //隐藏所有面板
     private void removeAllBroads(){
@@ -278,15 +193,43 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
         params.height = height;
     }
 
-    Handler handler = new Handler(){
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        Log.e("qzj", "isSoftBroadShown:" + isSoftBroadShown+",isChooseShown:" + isChooseShown);
+        if (isChecked){
+            if (!isChooseShown){
+                setChooseBroadHeight(keyBroadHeight);
+                DeviceUtils.isAdjustWindow(ChatRoomActivity.this, true);
+                if (!isSoftBroadShown){
+                    chooseBroad.requestLayout();
+                }
+            }
+            DeviceUtils.hideSoftKeyBoard(this, getCurrentFocus());
+            isSoftBroadShown = false;
+            isChooseShown = true;
+        }else{
+            DeviceUtils.isAdjustWindow(ChatRoomActivity.this, false);
+            DeviceUtils.showSoftKeyBoard(ChatRoomActivity.this,getCurrentFocus());
+            isSoftBroadShown = true;
+        }
+    }
+
+    /**
+     * 监听软键盘高度变化
+     */
+    class SoftBroadChangeListener implements ViewTreeObserver.OnGlobalLayoutListener{
         @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what){
-                case 1:
-                    setChooseBroadHeight(keyBroadHeight);
-                    break;
+        public void onGlobalLayout() {
+            Rect r = new Rect();
+            ChatRoomActivity.this.getWindow().getDecorView().getWindowVisibleDisplayFrame(r);
+            int screenHeight = ChatRoomActivity.this.getWindow().getDecorView().getRootView().getHeight();
+            int heightDifference = screenHeight - r.bottom;
+            Log.e("qzj", "----------获取到键盘高度------------: " + heightDifference);
+            if (heightDifference > 0) {
+                if (keyBroadHeight != heightDifference) keyBroadHeight = heightDifference;
+            } else {
+
             }
         }
-    };
-
+    }
 }

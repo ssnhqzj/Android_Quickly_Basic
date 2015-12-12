@@ -74,9 +74,11 @@ public class DeviceUtils {
     public static void isAdjustWindow(Activity activity,boolean isAdjust){
         Log.e("qzj","isAdjust:"+isAdjust);
         if (isAdjust){
-            activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+            activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
+                    |WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         }else{
-            activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
+            activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING
+                    |WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         }
     }
 
