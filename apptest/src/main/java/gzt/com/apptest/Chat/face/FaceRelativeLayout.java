@@ -60,7 +60,10 @@ public class FaceRelativeLayout extends RelativeLayout implements OnItemClickLis
 	private int current = 0;
 
 	private int broadHeight;
-	private int pageRowNum = 3;
+	/**
+	 * 默认表情显示4行
+	 */
+	private int pageRowNum = 4;
 	private int pageColumnNum;
 	private int pageFaceCount;
 	private int columnWidth;
@@ -141,6 +144,8 @@ public class FaceRelativeLayout extends RelativeLayout implements OnItemClickLis
 
 		for (int i = 0; i < emojis.size(); i++) {
 			GridView view = new GridView(context);
+			view.setHorizontalScrollBarEnabled(false);
+			view.setVerticalScrollBarEnabled(false);
 			FaceAdapter adapter = new FaceAdapter(context, emojis.get(i), columnWidth);
 			view.setAdapter(adapter);
 			faceAdapters.add(adapter);
@@ -177,6 +182,7 @@ public class FaceRelativeLayout extends RelativeLayout implements OnItemClickLis
 		public void handleMessage(Message msg) {
 			switch (msg.what){
 				case 1:
+					layout_point.removeAllViews();
 					pointViews = new ArrayList<ImageView>();
 					ImageView imageView;
 					for (int i = 0; i < pageViews.size(); i++) {
@@ -300,5 +306,9 @@ public class FaceRelativeLayout extends RelativeLayout implements OnItemClickLis
 		columnWidth = broadHeight/pageRowNum;
 		pageColumnNum = DisplayUtils.getDisplayWidth(context)/columnWidth;
 		pageFaceCount = pageRowNum * pageColumnNum - 1;
+	}
+
+	public int getBroadHeight(){
+		return this.broadHeight;
 	}
 }

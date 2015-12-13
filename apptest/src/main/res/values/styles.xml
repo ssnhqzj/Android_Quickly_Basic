@@ -27,4 +27,14 @@
         <item name="android:button">@drawable/chat_face_selector</item>
     </style>
 
+    <!--聊天室图片选择按钮样式-->
+    <style name="ChatImageCheckboxStyle" parent="@android:style/Widget.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/chat_image_selector</item>
+    </style>
+
+    <!--聊天室语音选择按钮样式-->
+    <style name="ChatVoiceCheckboxStyle" parent="@android:style/Widget.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/chat_voice_selector</item>
+    </style>
+
 </resources>

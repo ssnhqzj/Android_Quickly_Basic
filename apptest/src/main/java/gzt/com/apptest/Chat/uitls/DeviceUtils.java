@@ -23,26 +23,19 @@ public class DeviceUtils {
     /**
      * 隐藏软键盘
      * @param context
-     * @param view
      */
-    public static void hideSoftKeyBoard(Context context,View view){
+    public static void hideSoftKeyBoard(Activity context){
         InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        imm.hideSoftInputFromWindow(context.getCurrentFocus().getWindowToken(), 0);
     }
 
     /**
      * 显示软键盘
      * @param context
      */
-    public static void showSoftKeyBoard(Context context){
-//        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-//        imm.showSoftInput(view, 0);
-        Activity activity = (Activity) context;
-        if(activity != null){
-            InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInputFromInputMethod(activity.getCurrentFocus().getWindowToken(), 0);
-            imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
-        }
+    public static void showSoftKeyBoard(Activity context){
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(context.getCurrentFocus(), 0);
     }
 
     /**
@@ -79,9 +72,11 @@ public class DeviceUtils {
     public static void isAdjustWindow(Activity activity,boolean isAdjust){
         Log.e("qzj","isAdjust:"+isAdjust);
         if (isAdjust){
-            activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+            activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
+                    |WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         }else{
-            activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
+            activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING
+                    |WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         }
     }
 
