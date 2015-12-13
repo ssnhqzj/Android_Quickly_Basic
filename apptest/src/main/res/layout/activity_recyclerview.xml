@@ -1,19 +1,19 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <!-- 消息列表 -->
     <com.jcodecraeer.xrecyclerview.XRecyclerView
         android:id="@+id/recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/input_board" />
+        android:layout_weight="1"/>
 
     <LinearLayout
         android:id="@+id/input_board"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:background="#EEEEEE"
         android:orientation="vertical">
 
@@ -117,4 +117,4 @@
 
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>

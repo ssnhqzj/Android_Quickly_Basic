@@ -172,23 +172,22 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
         if (ev.getAction() == MotionEvent.ACTION_DOWN) {
             // 触摸EditText
             if (DeviceUtils.isTouchThisView(ev,msgEditText)){
-                DeviceUtils.isAdjustWindow(ChatRoomActivity.this, true);
-                DeviceUtils.showSoftKeyBoard(this, msgEditText);
-                setChooseBroadHeight(0);
-                faceBtn.setChecked(false);
+//                DeviceUtils.isAdjustWindow(ChatRoomActivity.this, true);
+//                DeviceUtils.showSoftKeyBoard(this);
+//                setChooseBroadHeight(0);
+//                faceBtn.setChecked(false);
             } // 触摸face button
             else if(DeviceUtils.isTouchThisView(ev,faceBtn)){
-                Log.e("qzj", ">>>>>>>>>>>>>face btn touch...>>>>>>>>>>>>");
-                DeviceUtils.isAdjustWindow(ChatRoomActivity.this, false);
-                setChooseBroadHeight(keyBroadHeight);
-                chooseBroad.requestLayout();
-                if (!faceBtnChecked){
-                    faceBtn.setChecked(true);
-                    faceBtnChecked = true;
-                }else{
-                    faceBtn.setChecked(false);
-                    faceBtnChecked = false;
-                }
+//                DeviceUtils.isAdjustWindow(ChatRoomActivity.this, false);
+//                setChooseBroadHeight(keyBroadHeight);
+//                chooseBroad.requestLayout();
+//                if (!faceBtnChecked){
+//                    faceBtn.setChecked(true);
+//                    faceBtnChecked = true;
+//                }else{
+//                    faceBtn.setChecked(false);
+//                    faceBtnChecked = false;
+//                }
             }
         }
         return super.dispatchTouchEvent(ev);
@@ -249,14 +248,14 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
             if (faceBroadView.getParent()!=null){
                 ((ViewGroup)faceBroadView.getParent()).removeView(faceBroadView);
             }
-            chooseBroad.addView(faceBroadView);
-            DeviceUtils.hideSoftKeyBoard(this, msgEditText);
-            chooseBroad.requestLayout();
+//            chooseBroad.addView(faceBroadView);
+//            DeviceUtils.hideSoftKeyBoard(this, msgEditText);
+//            chooseBroad.requestLayout();
         }else{
-            DeviceUtils.isAdjustWindow(ChatRoomActivity.this, true);
-            msgEditText.requestFocus();
-            DeviceUtils.showSoftKeyBoard(ChatRoomActivity.this, msgEditText);
-            setChooseBroadHeight(0);
+//            DeviceUtils.isAdjustWindow(ChatRoomActivity.this, true);
+//            msgEditText.requestFocus();
+//            DeviceUtils.showSoftKeyBoard(ChatRoomActivity.this, msgEditText);
+//            setChooseBroadHeight(0);
 //            chooseBroad.requestLayout();
         }
     }

@@ -33,11 +33,16 @@ public class DeviceUtils {
     /**
      * 显示软键盘
      * @param context
-     * @param view
      */
-    public static void showSoftKeyBoard(Context context,View view){
-        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(view, 0);
+    public static void showSoftKeyBoard(Context context){
+//        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+//        imm.showSoftInput(view, 0);
+        Activity activity = (Activity) context;
+        if(activity != null){
+            InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInputFromInputMethod(activity.getCurrentFocus().getWindowToken(), 0);
+            imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+        }
     }
 
     /**
