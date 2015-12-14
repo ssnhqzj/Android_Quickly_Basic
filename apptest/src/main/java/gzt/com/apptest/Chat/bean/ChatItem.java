@@ -17,9 +17,9 @@ public class ChatItem {
     // 布局类型--右文本
     public static final int LAYOUT_RIGHT_TEXT = R.layout.chat_item_right_text;
     // 布局类型--左图片
-    public static final int LAYOUT_LEFT_IMAGE = 3;
+    public static final int LAYOUT_LEFT_IMAGE = R.layout.chat_item_left_image;
     // 布局类型--右图片
-    public static final int LAYOUT_RIGHT_IMAGE = 4;
+    public static final int LAYOUT_RIGHT_IMAGE = R.layout.chat_item_right_image;
     // 布局类型--左语音
     public static final int LAYOUT_LEFT_VOICE = 5;
     // 布局类型--右语音

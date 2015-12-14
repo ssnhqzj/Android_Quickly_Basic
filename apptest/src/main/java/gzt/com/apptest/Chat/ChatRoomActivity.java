@@ -1,10 +1,13 @@
 package gzt.com.apptest.Chat;
 
+import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.Editable;
 import android.text.SpannableString;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -23,6 +26,7 @@ import java.util.ArrayList;
 
 import gzt.com.apptest.Chat.adapter.ChatListAdapter;
 import gzt.com.apptest.Chat.bean.ChatItem;
+import gzt.com.apptest.Chat.controller.ImageController;
 import gzt.com.apptest.Chat.face.FaceConversionUtil;
 import gzt.com.apptest.Chat.face.FaceRelativeLayout;
 import gzt.com.apptest.Chat.face.PasteEditText;
@@ -44,6 +48,7 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
 
     private ArrayList<ChatItem> msgData;
     private LinearLayout chooseBroad;
+    private LinearLayout inputBroad;
     private TextView send;
     private CheckBox imageBtn;
     private PasteEditText msgEditText;
@@ -98,6 +103,21 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
         initBroadView();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK && (requestCode == DeviceUtils.REQUEST_CODE_ALBUM
+                || requestCode == DeviceUtils.REQUEST_CODE_CAMERA)) {
+            String path = DeviceUtils.getReturnImagePath(requestCode, resultCode, data, this);
+            Log.e("qzj", "--------------------image path------------------ " + path);
+            ChatItem item = new ChatItem();
+            item.setLayoutType(ChatItem.LAYOUT_RIGHT_IMAGE);
+            item.setImageUrl("file://" + path);
+            msgData.add(0,item);
+            mAdapter.setMsgData(msgData);
+            mAdapter.notifyDataSetChanged();
+        }
+    }
+
     /**
      * 初始化表情控件
      */
@@ -109,6 +129,7 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
         voiceBtn = (CheckBox) findViewById(R.id.btn_voice);
         pressSay = (TextView) findViewById(R.id.btn_press_say);
         imageBtn = (CheckBox) findViewById(R.id.btn_image);
+        inputBroad = (LinearLayout) findViewById(R.id.input_board);
         voiceBtn.setOnClickListener(this);
         send.setOnClickListener(this);
         pressSay.setOnClickListener(this);
@@ -119,6 +140,7 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
         Log.e("qzj", "init keyBroadHeight = " + keyBroadHeight);
         msgEditText.getViewTreeObserver().addOnGlobalLayoutListener(new SoftBroadChangeListener());
         msgEditText.setOnTouchListener(new MsgEditTouchListener());
+        msgEditText.addTextChangedListener(new MsgEditWatcher());
 
         eventViews = new ArrayList<View>();
         eventViews.add(msgEditText);
@@ -129,21 +151,14 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-//        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-//            // 触摸EditText
-//            if (DeviceUtils.isTouchThisView(ev,msgEditText)){
-//                DeviceUtils.isAdjustWindow(ChatRoomActivity.this, true);
-//                DeviceUtils.showSoftKeyBoard(this, msgEditText);
-//                setChooseBroadHeight(0);
-//                faceBtn.setChecked(false);
-//            } // 触摸face button
-//            else if(DeviceUtils.isTouchThisView(ev,faceBtn)){
-//                Log.e("qzj", ">>>>>>>>>>>>>face btn touch...>>>>>>>>>>>>");
-//                DeviceUtils.isAdjustWindow(ChatRoomActivity.this, false);
-//                setChooseBroadHeight(keyBroadHeight);
-//                chooseBroad.requestLayout();
-//            }
-//        }
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            if(DeviceUtils.isTouchSpaceArea(ev,inputBroad)){
+                DeviceUtils.hideSoftKeyBoard(ChatRoomActivity.this);
+                setChooseBroadHeight(0);
+                cancelOtherState(msgEditText);
+                chooseBroad.requestLayout();
+            }
+        }
         return super.dispatchTouchEvent(ev);
     }
 
@@ -158,6 +173,7 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
                 item.setText(spannableString);
                 msgData.add(0,item);
                 mAdapter.notifyDataSetChanged();
+                msgEditText.setText("");
                 break;
 
             // 点击切换表情按钮
@@ -249,6 +265,7 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
         removeAllBroads();
         if (imageBroadView == null){
             imageBroadView = inflater.inflate(R.layout.chat_broad_image,null);
+            new ImageController(this,imageBroadView).init();
         }
         if (imageBroadView.getParent()!=null){
             ((ViewGroup)imageBroadView.getParent()).removeView(imageBroadView);
@@ -261,7 +278,6 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
      * @param height
      */
     private void setChooseBroadHeight(int height){
-        Log.e("qzj", "setChooseBroadHeight:" + height);
         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) chooseBroad.getLayoutParams();
         params.height = height;
     }
@@ -315,6 +331,33 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
                     break;
             }
             return false;
+        }
+    }
+
+    /**
+     * 消息EditText文本改变监听
+     */
+    class MsgEditWatcher implements TextWatcher {
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            if (s != null && !s.toString().equals("")){
+                send.setVisibility(View.VISIBLE);
+                imageBtn.setVisibility(View.GONE);
+            }else{
+                send.setVisibility(View.GONE);
+                imageBtn.setVisibility(View.VISIBLE);
+            }
         }
     }
 
