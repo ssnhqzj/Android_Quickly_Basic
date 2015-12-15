@@ -304,8 +304,8 @@ public class XRecyclerView extends RecyclerView {
 
         public WrapAdapter(ArrayList<View> headerViews, ArrayList<View> footViews, RecyclerView.Adapter adapter) {
             this.adapter = adapter;
-                this.mHeaderViews = headerViews;
-                this.mFootViews = footViews;
+            this.mHeaderViews = headerViews;
+            this.mFootViews = footViews;
         }
 
         @Override
@@ -318,7 +318,7 @@ public class XRecyclerView extends RecyclerView {
                     @Override
                     public int getSpanSize(int position) {
                         return (isHeader(position)||  isFooter(position))
-                                 ? gridManager.getSpanCount() : 1;
+                                ? gridManager.getSpanCount() : 1;
                     }
                 });
             }

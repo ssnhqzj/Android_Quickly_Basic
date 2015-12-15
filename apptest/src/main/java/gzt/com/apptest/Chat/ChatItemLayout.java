@@ -70,7 +70,7 @@ public class ChatItemLayout extends LinearLayout {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        super.onTouchEvent(event);
+        boolean result = super.onTouchEvent(event);
         if(detector.onTouchEvent(event)){
             event.setAction(MotionEvent.ACTION_CANCEL);
         }
@@ -95,7 +95,7 @@ public class ChatItemLayout extends LinearLayout {
                 break;
         }
 
-        return true;
+        return result;
     }
 
     @Override
