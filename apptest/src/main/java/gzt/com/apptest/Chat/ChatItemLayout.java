@@ -30,7 +30,7 @@ public class ChatItemLayout extends LinearLayout {
     /**
      * 遮罩层颜色
      */
-    private int coveringColor = 0x44FF0000;
+    private int coveringColor = 0x88D4D4D4;
     /**
      * 遮罩层透明度
      */

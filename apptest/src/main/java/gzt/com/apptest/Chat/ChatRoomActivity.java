@@ -14,6 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -27,6 +28,7 @@ import java.util.ArrayList;
 import gzt.com.apptest.Chat.adapter.ChatListAdapter;
 import gzt.com.apptest.Chat.bean.ChatItem;
 import gzt.com.apptest.Chat.controller.ImageController;
+import gzt.com.apptest.Chat.controller.VoiceController;
 import gzt.com.apptest.Chat.face.FaceConversionUtil;
 import gzt.com.apptest.Chat.face.FaceRelativeLayout;
 import gzt.com.apptest.Chat.face.PasteEditText;
@@ -54,7 +56,7 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
     private PasteEditText msgEditText;
     private CheckBox faceBtn;
     private CheckBox voiceBtn;
-    private TextView pressSay;
+    private Button record;
     private LayoutInflater inflater;
 
     @Override
@@ -127,12 +129,11 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
         send = (TextView) findViewById(R.id.btn_send);
         faceBtn = (CheckBox) findViewById(R.id.btn_face);
         voiceBtn = (CheckBox) findViewById(R.id.btn_voice);
-        pressSay = (TextView) findViewById(R.id.btn_press_say);
+        record = (Button) findViewById(R.id.btn_press_say);
         imageBtn = (CheckBox) findViewById(R.id.btn_image);
         inputBroad = (LinearLayout) findViewById(R.id.input_board);
         voiceBtn.setOnClickListener(this);
         send.setOnClickListener(this);
-        pressSay.setOnClickListener(this);
         imageBtn.setOnClickListener(this);
         msgEditText.setClickable(true);
         faceBtn.setOnClickListener(this);
@@ -147,6 +148,8 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
         eventViews.add(faceBtn);
         eventViews.add(imageBtn);
         eventViews.add(voiceBtn);
+
+        new VoiceController(this,record);
     }
 
     @Override
@@ -249,11 +252,11 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
             DeviceUtils.hideSoftKeyBoard(ChatRoomActivity.this);
             setChooseBroadHeight(0);
             msgEditText.setVisibility(View.GONE);
-            pressSay.setVisibility(View.VISIBLE);
+            record.setVisibility(View.VISIBLE);
         }else{
             checkedChooseBroad(false);
             msgEditText.setVisibility(View.VISIBLE);
-            pressSay.setVisibility(View.GONE);
+            record.setVisibility(View.GONE);
             msgEditText.requestFocus();
         }
     }
@@ -311,7 +314,7 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
             if (v == voiceBtn) {
                 msgEditText.setVisibility(View.VISIBLE);
                 msgEditText.requestFocus();
-                pressSay.setVisibility(View.GONE);
+                record.setVisibility(View.GONE);
             }
         }
     }
@@ -358,6 +361,17 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
                 send.setVisibility(View.GONE);
                 imageBtn.setVisibility(View.VISIBLE);
             }
+        }
+    }
+
+    /**
+     * 录音touch监听
+     */
+    class RecordTouchListener implements View.OnTouchListener{
+
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            return false;
         }
     }
 
