@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.qzj.chat.view.ChatItemLayout
+        android:id="@+id/chat_item_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/chatfrom_bg_normal">
+
+        <!--<View
+            android:layout_width="60dip"
+            android:layout_height="60dip"
+            android:background="#999999"
+            android:layout_gravity="center" />-->
+
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dip"
+            android:layout_gravity="center"
+            android:maxWidth="200dp"
+            android:text="在achat项目中，对话内容的长宽设置为自适应，但是如果文本内容太多，则宽度差不多布满，若自己说的和对方说的都很多内容，则满屏都是文字，则不容易分辨出是来自别人说的还是自己说的。那么需要对本身具有自适应的布局再来个宽度限制。
+首先，在xml里面定义layout的layout_width/layout_height都要设置为wrap_content，然后在getView方法里面，一开始就让这个布局wrap_content(为什么xml里面设置了wrap_content，这里还要再设置一遍呢？因为布局的重用，不多说"/>
+
+    </com.qzj.chat.view.ChatItemLayout>
+
+</RelativeLayout>
