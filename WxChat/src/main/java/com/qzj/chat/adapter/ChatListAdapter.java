@@ -108,33 +108,33 @@ public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             // 左边文本
             case ChatItem.LAYOUT_LEFT_TEXT:
                 ((LeftTextHolder)viewHolder).textContent.setText(msgData.get(position).getText());
-                ((LeftTextHolder)viewHolder).rootView.setTag(TAG_POSITION, position);
-                ((LeftTextHolder)viewHolder).rootView.setTag(TAG_TYPE,TEXT);
+                ((LeftTextHolder)viewHolder).rootView.setTag(R.id.chat_tag_position, position);
+                ((LeftTextHolder)viewHolder).rootView.setTag(R.id.chat_tag_msg_type,TEXT);
                 ((LeftTextHolder)viewHolder).rootView.setOnLongClickListener(this);
                 break;
 
             // 右边文本
             case ChatItem.LAYOUT_RIGHT_TEXT:
                 ((RightTextHolder)viewHolder).textContent.setText(msgData.get(position).getText());
-                ((RightTextHolder)viewHolder).rootView.setTag(TAG_POSITION, position);
-                ((RightTextHolder)viewHolder).rootView.setTag(TAG_TYPE, TEXT);
+                ((RightTextHolder)viewHolder).rootView.setTag(R.id.chat_tag_position, position);
+                ((RightTextHolder)viewHolder).rootView.setTag(R.id.chat_tag_msg_type, TEXT);
                 ((RightTextHolder)viewHolder).rootView.setOnLongClickListener(this);
                 break;
 
             // 左边图片
             case ChatItem.LAYOUT_LEFT_IMAGE:
-                ((LeftImageHolder)viewHolder).rootView.setTag(TAG_POSITION,position);
-                ((LeftImageHolder)viewHolder).rootView.setTag(TAG_TYPE,IMAGE);
-                ((LeftImageHolder)viewHolder).rootView.setOnLongClickListener(this);
+                ((LeftImageHolder)viewHolder).imageView.setTag(R.id.chat_tag_position,position);
+                ((LeftImageHolder)viewHolder).imageView.setTag(R.id.chat_tag_msg_type,IMAGE);
+                ((LeftImageHolder)viewHolder).imageView.setOnLongClickListener(this);
 
                 break;
 
             // 右边图片
             case ChatItem.LAYOUT_RIGHT_IMAGE:
-                ((RightImageHolder)viewHolder).rootView.setTag(TAG_POSITION,position);
-                ((RightImageHolder)viewHolder).rootView.setTag(TAG_TYPE,IMAGE);
-                ((RightImageHolder)viewHolder).rootView.setOnLongClickListener(this);
-                ((RightImageHolder) viewHolder).imageView.setImageResource(R.mipmap.test_4);
+                ((RightImageHolder)viewHolder).imageView.setTag(R.id.chat_tag_position,position);
+                ((RightImageHolder)viewHolder).imageView.setTag(R.id.chat_tag_msg_type,IMAGE);
+                ((RightImageHolder)viewHolder).imageView.setOnLongClickListener(this);
+                ((RightImageHolder)viewHolder).imageView.setImageResource(R.mipmap.test_4);
                 final ChatImageView iv = ((RightImageHolder) viewHolder).imageView;
                 // 发送图片
                 if (msgData.get(position).isSend()){
@@ -185,8 +185,8 @@ public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 });
                 ((LeftVoiceHolder)viewHolder).second.setText(Html.fromHtml(msgData.get(position).getVoiceSecond() + "\""));
 
-                ((LeftVoiceHolder)viewHolder).rootView.setTag(TAG_POSITION, position);
-                ((LeftVoiceHolder)viewHolder).rootView.setTag(TAG_TYPE, VOICE);
+                ((LeftVoiceHolder)viewHolder).rootView.setTag(R.id.chat_tag_position, position);
+                ((LeftVoiceHolder)viewHolder).rootView.setTag(R.id.chat_tag_msg_type, VOICE);
                 ((LeftVoiceHolder)viewHolder).rootView.setOnLongClickListener(this);
                 break;
 
@@ -215,8 +215,8 @@ public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 });
                 ((RightVoiceHolder)viewHolder).second.setText(Html.fromHtml(msgData.get(position).getVoiceSecond() + "\""));
 
-                ((RightVoiceHolder)viewHolder).rootView.setTag(TAG_POSITION, position);
-                ((RightVoiceHolder)viewHolder).rootView.setTag(TAG_TYPE, VOICE);
+                ((RightVoiceHolder)viewHolder).rootView.setTag(R.id.chat_tag_position, position);
+                ((RightVoiceHolder)viewHolder).rootView.setTag(R.id.chat_tag_msg_type, VOICE);
                 ((RightVoiceHolder)viewHolder).rootView.setOnLongClickListener(this);
                 break;
         }
@@ -228,7 +228,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public boolean onLongClick(View v) {
         ArrayList<String> popupList = new ArrayList<String>();
-        switch ((Integer)v.getTag(TAG_TYPE)){
+        switch ((Integer)v.getTag(R.id.chat_tag_msg_type)){
             case TEXT:
                 popupList.add("复制");
                 popupList.add("删除");

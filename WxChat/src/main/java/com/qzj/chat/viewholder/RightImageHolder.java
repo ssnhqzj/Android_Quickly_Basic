@@ -5,7 +5,6 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.qzj.chat.view.ChatImageView;
-import com.qzj.chat.view.ChatItemLayout;
 
 import gzt.com.apptest.R;
 
@@ -15,9 +14,6 @@ import gzt.com.apptest.R;
  * Created by qzj on 2015/12/7.
  */
 public class RightImageHolder extends RecyclerView.ViewHolder {
-
-    // root view
-    public ChatItemLayout rootView;
 
     // 头像
     public ImageView headView;
@@ -32,7 +28,6 @@ public class RightImageHolder extends RecyclerView.ViewHolder {
 
     public RightImageHolder(View itemView) {
         super(itemView);
-        rootView = (ChatItemLayout) itemView.findViewById(R.id.ciri_content);
         imageView = (ChatImageView) itemView.findViewById(R.id.ciri_content_image);
         headView = (ImageView) itemView.findViewById(R.id.ciri_head);
     }

@@ -12,12 +12,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
+import com.qzj.chat.adapter.PopupListAdapter;
+import com.qzj.chat.uitls.DensityUtils;
+import com.qzj.chat.uitls.DisplayUtils;
+
 import java.util.List;
 
 import gzt.com.apptest.R;
-import com.qzj.chat.adapter.PopupListAdapter;
-import com.qzj.chat.uitls.DisplayUtils;
-import gzt.com.apptest.utils.DensityUtils;
 
 /**
  * 列表项的长按弹出菜单
@@ -99,6 +100,6 @@ public class PopupList {
     }
     
     private int dp2px(float value){
-        return DensityUtils.dip2px(context,value);
+        return DensityUtils.dip2px(context, value);
     }
 }

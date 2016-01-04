@@ -8,7 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import gzt.com.apptest.utils.DensityUtils;
+import com.qzj.chat.uitls.DensityUtils;
 
 public class DividerItemDecoration extends RecyclerView.ItemDecoration{
 
@@ -22,7 +22,7 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration{
         if(orientation != LinearLayoutManager.VERTICAL && orientation != LinearLayoutManager.HORIZONTAL){
             throw new IllegalArgumentException("invalid orientation") ;
         }
-        mItemSize = DensityUtils.dip2px(context,1);//1dp
+        mItemSize = DensityUtils.dip2px(context, 1);//1dp
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG) ;
         mPaint.setColor(0xFF444444);
         mPaint.setStyle(Paint.Style.FILL);

@@ -1,4 +1,4 @@
-package gzt.com.apptest.utils;
+package com.qzj.chat.uitls;
 
 import android.content.Context;
 

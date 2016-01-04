@@ -330,6 +330,7 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
             String path = DeviceUtils.getReturnImagePath(requestCode, resultCode, data, this);
             Log.e("qzj", "--------------------image path------------------ " + path);
             ChatItem item = new ChatItem();
+            item.setIsSend(true);
             item.setLayoutType(ChatItem.LAYOUT_RIGHT_IMAGE);
             item.setImageUrl("file://" + path);
             msgData.add(0, item);
