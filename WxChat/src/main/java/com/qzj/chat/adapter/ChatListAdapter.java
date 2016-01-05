@@ -251,7 +251,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         });
 
         PointF pointF = (PointF) v.getTag();
-        popupListWindow.showPopupWindow(context, v, (Integer) v.getTag(), popupList, pointF.x, pointF.y);
+        popupListWindow.showPopupWindow(context, v, (Integer) v.getTag(R.id.chat_tag_position), popupList, pointF.x, pointF.y);
         return true;
     }
 

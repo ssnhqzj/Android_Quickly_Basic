@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.NinePatch;
 import android.graphics.Paint;
+import android.graphics.PointF;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
@@ -89,7 +90,9 @@ public class ChatImageView extends ImageView {
             event.setAction(MotionEvent.ACTION_CANCEL);
         }
         switch (event.getAction()){
-            case MotionEvent.ACTION_DOWN:
+            case MotionEvent.ACTION_DOWN:PointF pointF = new PointF();
+                pointF.set(event.getRawX(),event.getRawY());
+                this.setTag(pointF);
                 lastY = event.getRawY();
                 getParent().requestDisallowInterceptTouchEvent(true);
                 break;
