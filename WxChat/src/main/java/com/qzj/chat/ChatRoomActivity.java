@@ -192,8 +192,10 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
 
             // 点击切换图片按钮
             case R.id.btn_image:
+                Log.e("qzj","点击了图片按钮");
                 // 选中图片按钮
                 if (imageBtn.isChecked()){
+                    msgEditText.setFocusable(false);
                     checkedChooseBroad(true);
                     fillImageView();
                     cancelOtherState(imageBtn);
@@ -290,16 +292,18 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
     }
 
     /**
-     * 是否选中表情或者图片选中面板
+     * 是否选中表情或者图片选择面板
      * @param isChecked
      */
     private void checkedChooseBroad(boolean isChecked){
         if (isChecked){
+            cancelEditTextFocus(msgEditText);
             setChooseBroadHeight(keyBroadHeight);
             DeviceUtils.hideSoftKeyBoard(ChatRoomActivity.this);
             DeviceUtils.isAdjustWindow(ChatRoomActivity.this, false);
             chooseBroad.requestLayout();
         }else{
+            requestEditTextFocus(msgEditText);
             setChooseBroadHeight(0);
             DeviceUtils.isAdjustWindow(ChatRoomActivity.this, true);
             DeviceUtils.showSoftKeyBoard(ChatRoomActivity.this);
@@ -358,6 +362,24 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
     }
 
     /**
+     * EditText获取焦点
+     * @param editText
+     */
+    private void cancelEditTextFocus(EditText editText){
+        editText.setFocusable(false);
+    }
+
+    /**
+     * EditText取消焦点
+     * @param editText
+     */
+    private void requestEditTextFocus(EditText editText){
+        editText.setFocusable(true);
+        editText.setFocusableInTouchMode(true);
+        editText.requestFocus();
+    }
+
+    /**
      * 消息EditText触摸监听
      */
     class MsgEditTouchListener implements View.OnTouchListener {
@@ -366,6 +388,7 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
         public boolean onTouch(View v, MotionEvent event) {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
+                    Log.e("qzj","触摸了文本框");
                     // 只要触摸了EditText都要设置成可调整
                     checkedChooseBroad(false);
                     cancelOtherState(msgEditText);
@@ -418,6 +441,8 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
                     keyBroadHeight = heightDifference;
                     DeviceUtils.saveKeyBroadHeight(ChatRoomActivity.this,keyBroadHeight);
                 }
+            }else{
+
             }
         }
     }
