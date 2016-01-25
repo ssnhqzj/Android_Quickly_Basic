@@ -46,24 +46,20 @@ public abstract class Callback<T>
     public abstract void onResponse(T response);
 
 
-    public static Callback CALLBACK_DEFAULT = new Callback()
-    {
+    public static Callback CALLBACK_DEFAULT = new Callback() {
 
         @Override
-        public Object parseNetworkResponse(Response response) throws IOException
-        {
+        public Object parseNetworkResponse(Response response) throws IOException {
             return null;
         }
 
         @Override
-        public void onError(Request request, Exception e)
-        {
+        public void onError(Request request, Exception e) {
 
         }
 
         @Override
-        public void onResponse(Object response)
-        {
+        public void onResponse(Object response) {
 
         }
     };

@@ -1,1 +1,1 @@
-include ':app', ':commlib', ':viewPagerIndicator', ':xrecyclerview', ':apptest', ':library_imageloader', ':okhttpdome', ':okhttputils'
+include ':app', ':commlib', ':viewPagerIndicator', ':xrecyclerview', ':apptest', ':okhttpdome', ':okhttputils', ':logistics', ':library_imageloader', ':AnyVersion', ':glide'

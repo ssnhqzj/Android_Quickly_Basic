@@ -2,4 +2,6 @@
     <string name="app_name">AppTest</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_validation">ValidationActivity</string>
+    <string name="title_activity_rxjava">RxjavaActivity</string>
+    <string name="title_activity_fresco">FrescoActivity</string>
 </resources>

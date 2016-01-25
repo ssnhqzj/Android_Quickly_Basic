@@ -12,13 +12,13 @@ public abstract class OkHttpRequestBuilder
     protected String url;
     protected Object tag;
     protected Map<String, String> headers;
-    protected Map<String, String> params;
+    protected Map<String, Object> params;
 
     public abstract OkHttpRequestBuilder url(String url);
 
     public abstract OkHttpRequestBuilder tag(Object tag);
 
-    public abstract OkHttpRequestBuilder params(Map<String, String> params);
+    public abstract OkHttpRequestBuilder addParams(Map<String, Object> params);
 
     public abstract OkHttpRequestBuilder addParams(String key, String val);
 

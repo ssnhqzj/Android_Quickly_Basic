@@ -13,5 +13,6 @@
     <string name="error_view_network_error_click_to_refresh">没有可用的网络\r\n点击重新加载</string>
     <string name="tip_network_error">没有可用的网络\r\n点击重新加载</string>
     <string name="title_activity_gua_gua_ka">GuaGuaKaActivity</string>
+    <string name="title_activity_soft_input_mode">SoftInputModeActivity</string>
 
 </resources>

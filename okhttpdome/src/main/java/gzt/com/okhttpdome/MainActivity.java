@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         OkHttpUtils
                 .post()
                 .url(jsonUrl)
-//                .addParams("username", "hyman")
+                .addParams("username", "hyman")
 //                .addParams("password", "123")
 //                .addHeader("Content-type","text/html")
                 .build()

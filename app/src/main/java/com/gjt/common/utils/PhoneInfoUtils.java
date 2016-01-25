@@ -3,13 +3,8 @@ package com.gjt.common.utils;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
 import android.telephony.TelephonyManager;
 
-import org.apache.http.conn.util.InetAddressUtils;
-
-import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.Collections;
 import java.util.List;
@@ -46,29 +41,6 @@ public final class PhoneInfoUtils {
 //		return ip;
 //	}
 
-	/**
-	 * @Title: getWifiIpAddress
-	 * @Description: 得到Wifi的ip地址
-	 * @param context
-	 * @return
-	 * @author yb
-	 * @return String
-	 */
-	public static String getWifiIpAddress(Context context) {
-		String ip = null;
-		// 获取wifi服务
-
-		WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-		// 判断wifi是否开启
-		if (wifiManager.isWifiEnabled()) {
-			// wifiManager.setWifiEnabled(true);
-			WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-			int ipAddress = wifiInfo.getIpAddress();
-			ip = intToIp(ipAddress);
-		}
-
-		return ip;
-	}
 
 	/**
 	 * @Title: intToIp
@@ -125,41 +97,6 @@ public final class PhoneInfoUtils {
 		 * "/address").toUpperCase().trim(); } catch (IOException ex) { return
 		 * null; }
 		 */
-	}
-
-	/**
-	 * @Title: getIPAddress
-	 * @Description: 获得ip地址
-	 * @param useIPv4
-	 * @return
-	 * @author yb
-	 * @return String
-	 */
-	public static String getIPAddress(boolean useIPv4) {
-		try {
-			List<NetworkInterface> interfaces = Collections.list(NetworkInterface.getNetworkInterfaces());
-			for (NetworkInterface intf : interfaces) {
-				List<InetAddress> addrs = Collections.list(intf.getInetAddresses());
-				for (InetAddress addr : addrs) {
-					if (!addr.isLoopbackAddress()) {
-						String sAddr = addr.getHostAddress().toUpperCase();
-						boolean isIPv4 = InetAddressUtils.isIPv4Address(sAddr);
-						if (useIPv4) {
-							if (isIPv4)
-								return sAddr;
-						} else {
-							if (!isIPv4) {
-								int delim = sAddr.indexOf('%'); // drop ip6 port
-																// suffix
-								return delim < 0 ? sAddr : sAddr.substring(0, delim);
-							}
-						}
-					}
-				}
-			}
-		} catch (Exception ex) {
-		} // for now eat exceptions
-		return "";
 	}
 
 	public static String getIMEI(Context context) {

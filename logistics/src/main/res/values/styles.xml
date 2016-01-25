@@ -1,0 +1,69 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="ClubToolbar" parent="Widget.AppCompat.Toolbar">
+        <item name="contentInsetStart">0dp</item>
+    </style>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <!--<item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>-->
+        <item name="toolbarStyle">@style/ClubToolbar</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="LineEditText">
+        <item name="android:minHeight">36dp</item>
+        <item name="android:textColor">@color/common_white</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:paddingLeft">5dp</item>
+        <item name="android:paddingRight">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:drawablePadding">5dp</item>
+        <item name="android:background">@null</item>
+        <item name="android:textColorHint">@color/common_white</item>
+        <item name="android:textCursorDrawable" tools:targetApi="12">@drawable/cursor_color_white</item>
+    </style>
+
+    <style name="GrayLineEditText">
+        <item name="android:minHeight">36dp</item>
+        <item name="android:textColor">@color/common_gray</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:paddingLeft">5dp</item>
+        <item name="android:paddingRight">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:drawablePadding">5dp</item>
+        <item name="android:background">@null</item>
+        <item name="android:textColorHint">@color/common_gray_hint</item>
+        <item name="android:textCursorDrawable" tools:targetApi="12">@drawable/cursor_color_gray</item>
+    </style>
+
+    <style name="CenterCheckboxStyle_One" parent="@android:style/Widget.CompoundButton.CheckBox">
+        <item name="android:button">@null</item>
+        <item name="android:drawableLeft">@drawable/center_checkbox_selector_one</item>
+        <item name="android:background">@drawable/common_btn_main_selector</item>
+        <item name="android:textColor">@color/common_white</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:drawablePadding">5dp</item>
+    </style>
+
+    <style name="CenterCheckboxStyle_More" parent="@android:style/Widget.CompoundButton.CheckBox">
+        <item name="android:button">@null</item>
+        <item name="android:drawableLeft">@drawable/center_checkbox_selector_more</item>
+        <item name="android:background">@drawable/common_btn_main_selector</item>
+        <item name="android:textColor">@color/common_white</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:drawablePadding">5dp</item>
+    </style>
+
+</resources>

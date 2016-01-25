@@ -50,7 +50,7 @@ public class PostStringBuilder extends OkHttpRequestBuilder
     }
 
     @Override
-    public PostStringBuilder params(Map<String, String> params)
+    public PostStringBuilder addParams(Map<String, Object> params)
     {
         this.params = params;
         return this;

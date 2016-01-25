@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="common_red">#FF0000</color>
+    <color name="common_white">#FFFFFF</color>
+    <color name="common_white_F7F7F7">#F7F7F7</color>
+    <color name="common_gray">#727272</color>
+    <color name="common_gray_hint">#A2A2A2</color>
+    <color name="common_main">#F72901</color>
+    <color name="common_main_press">#CC2200</color>
+    <color name="common_deliver_goods_bg">#EFDFDF</color>
+    <color name="common_gray_808080">#808080</color>
+    <color name="common_E9967A">#E9967A</color>
+    <color name="common_cancel_solid">#E8E8E8</color>
+    <color name="common_cancel_press">#C9DEEA</color>
+    <color name="gray_878787">#878787</color>
+    <color name="listview_item_normal">#FFFFFF</color>
+    <color name="listview_item_pressed">#d4d4d4</color>
+</resources>

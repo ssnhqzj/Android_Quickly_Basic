@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.gjt"
     android:versionCode="1"
-    android:versionName="1.0" >
+    android:versionName="1.0">
 
     <supports-screens
         android:anyDensity="true"
@@ -19,10 +19,10 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
             android:name=".view.apguide.BootActivity"
-            android:label="@string/title_activity_main" >
+            android:label="@string/title_activity_main">
 
             <!--
             <intent-filter>
@@ -33,30 +33,28 @@
         </activity>
         <activity
             android:name=".view.apguide.AppGuide_Activity"
-            android:label="@string/title_activity_main" >
-        </activity>
+            android:label="@string/title_activity_main"></activity>
         <activity
             android:name=".view.MainActivity"
-            android:label="@string/title_activity_main" >
-        </activity>
+            android:label="@string/title_activity_main"></activity>
         <activity
             android:name=".view.CanvasActivity"
-            android:label="@string/title_activity_main" >
-
+            android:label="@string/title_activity_main">
+        </activity>
+        <activity
+            android:name=".view.GuaGuaKaActivity"
+            android:label="@string/title_activity_gua_gua_ka"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".view.SoftInputModeActivity"
+            android:label="@string/title_activity_soft_input_mode"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustNothing">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
-        </activity>
-        <activity
-            android:name=".view.GuaGuaKaActivity"
-            android:label="@string/title_activity_gua_gua_ka"
-            android:theme="@style/AppTheme.NoActionBar" >
-
-
-
         </activity>
     </application>
 

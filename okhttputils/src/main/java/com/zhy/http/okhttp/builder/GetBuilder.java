@@ -22,7 +22,7 @@ public class GetBuilder extends OkHttpRequestBuilder
         return new GetRequest(url, tag, params, headers).build();
     }
 
-    private String appendParams(String url, Map<String, String> params)
+    private String appendParams(String url, Map<String, Object> params)
     {
         StringBuilder sb = new StringBuilder();
         sb.append(url + "?");
@@ -53,7 +53,7 @@ public class GetBuilder extends OkHttpRequestBuilder
     }
 
     @Override
-    public GetBuilder params(Map<String, String> params)
+    public GetBuilder addParams(Map<String, Object> params)
     {
         this.params = params;
         return this;

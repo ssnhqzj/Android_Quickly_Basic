@@ -24,7 +24,7 @@ public class PostFormRequest extends OkHttpRequest
 {
     private List<PostFormBuilder.FileInput> files = new ArrayList<>();
 
-    public PostFormRequest(String url, Object tag, Map<String, String> params, Map<String, String> headers, List<PostFormBuilder.FileInput> files)
+    public PostFormRequest(String url, Object tag, Map<String, Object> params, Map<String, String> headers, List<PostFormBuilder.FileInput> files)
     {
         super(url, tag, params, headers);
         this.files = files;
@@ -98,14 +98,18 @@ public class PostFormRequest extends OkHttpRequest
 
     private void addParams(MultipartBuilder builder)
     {
+
+
         if (params != null && !params.isEmpty())
         {
             for (String key : params.keySet())
             {
                 builder.addPart(Headers.of("Content-Disposition", "form-data; name=\"" + key + "\""),
-                        RequestBody.create(null, params.get(key)));
-
+                        RequestBody.create(null, params.get(key).toString()));
             }
+        } else
+        {
+            builder.addFormDataPart("1", "1");
         }
     }
 
@@ -118,7 +122,7 @@ public class PostFormRequest extends OkHttpRequest
 
         for (String key : params.keySet())
         {
-            builder.add(key, params.get(key));
+            builder.add(key, params.get(key).toString());
         }
     }
 }

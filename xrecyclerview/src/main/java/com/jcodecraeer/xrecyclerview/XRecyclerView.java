@@ -20,8 +20,8 @@ public class XRecyclerView extends RecyclerView {
     private boolean isnomore = false;
     private int mRefreshProgressStyle = ProgressStyle.SysProgress;
     private int mLoadingMoreProgressStyle = ProgressStyle.SysProgress;
-    private ArrayList<View> mHeaderViews = new ArrayList<View>();
-    private ArrayList<View> mFootViews = new ArrayList<View>();
+    private ArrayList<View> mHeaderViews = new ArrayList<>();
+    private ArrayList<View> mFootViews = new ArrayList<>();
     private Adapter mAdapter;
     private Adapter mWrapAdapter;
     private float mLastY = -1;
@@ -191,45 +191,6 @@ public class XRecyclerView extends RecyclerView {
     }
 
     @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        if (mLastY == -1) {
-            mLastY = ev.getRawY();
-        }
-        switch (ev.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                mLastY = ev.getRawY();
-                break;
-            case MotionEvent.ACTION_MOVE:
-                final float deltaY = ev.getRawY() - mLastY;
-                mLastY = ev.getRawY();
-                if ( isOnTop() && pullRefreshEnabled) {
-                    mRefreshHeader.onMove(deltaY / DRAG_RATE);
-                    if(mRefreshHeader.getVisiableHeight() > 0 && mRefreshHeader.getState() < ArrowRefreshHeader.STATE_REFRESHING ) {
-                        Log.i("getVisiableHeight", "getVisiableHeight = " + mRefreshHeader.getVisiableHeight());
-                        Log.i("getVisiableHeight", " mRefreshHeader.getState() = " +  mRefreshHeader.getState());
-                        return false;
-                    }
-                }
-                break;
-            default:
-                mLastY = -1; // reset
-                if ( isOnTop() && pullRefreshEnabled) {
-                    if( mRefreshHeader.releaseAction()) {
-                        if (mLoadingListener != null) {
-                            mLoadingListener.onRefresh();
-                            isnomore = false;
-                            previousTotal = 0;
-                        }
-                    }
-                }
-                break;
-        }
-        boolean result = super.dispatchTouchEvent(ev);
-        Log.e("qzj","----------xrecyclerView-----------------"+result);
-        return result;
-    }
-
-    /*@Override
     public boolean onTouchEvent(MotionEvent ev) {
         if (mLastY == -1) {
             mLastY = ev.getRawY();
@@ -263,10 +224,8 @@ public class XRecyclerView extends RecyclerView {
                 }
                 break;
         }
-        boolean result = super.onTouchEvent(ev);
-        Log.e("qzj","----------------XRecyclerView onTouchEvent-----------------"+result);
-        return result;
-    }*/
+        return super.onTouchEvent(ev);
+    }
 
     private int findMax(int[] lastPositions) {
         int max = lastPositions[0];
@@ -353,15 +312,15 @@ public class XRecyclerView extends RecyclerView {
         public void onAttachedToRecyclerView(RecyclerView recyclerView) {
             super.onAttachedToRecyclerView(recyclerView);
             RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
-                if(manager instanceof GridLayoutManager) {
-                    final GridLayoutManager gridManager = ((GridLayoutManager) manager);
-                    gridManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-                        @Override
-                        public int getSpanSize(int position) {
-                            return (isHeader(position)||  isFooter(position))
-                                    ? gridManager.getSpanCount() : 1;
-                        }
-                    });
+            if(manager instanceof GridLayoutManager) {
+                final GridLayoutManager gridManager = ((GridLayoutManager) manager);
+                gridManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                    @Override
+                    public int getSpanSize(int position) {
+                        return (isHeader(position)||  isFooter(position))
+                                ? gridManager.getSpanCount() : 1;
+                    }
+                });
             }
         }
 

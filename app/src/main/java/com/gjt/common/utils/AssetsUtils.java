@@ -2,8 +2,6 @@ package com.gjt.common.utils;
 
 import android.content.Context;
 
-import org.apache.http.util.EncodingUtils;
-
 import java.io.InputStream;
 
 /**
@@ -20,7 +18,7 @@ public class AssetsUtils {
             byte[]  buffer = new byte[length];
             //将文件中的数据读到byte数组中
             in.read(buffer);
-            result = EncodingUtils.getString(buffer, "UTF-8");
+            result = new String(buffer, "UTF-8");
         } catch (Exception e) {
             e.printStackTrace();
         }

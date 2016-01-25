@@ -51,8 +51,6 @@ public class OkHttpUtils
                 }
             });
         }
-
-
     }
 
     public static OkHttpUtils getInstance()

@@ -19,7 +19,7 @@ public class PostFileRequest extends OkHttpRequest
     private MediaType mediaType;
 
 
-    public PostFileRequest(String url, Object tag, Map<String, String> params, Map<String, String> headers, File file, MediaType mediaType)
+    public PostFileRequest(String url, Object tag, Map<String, Object> params, Map<String, String> headers, File file, MediaType mediaType)
     {
         super(url, tag, params, headers);
         this.file = file;

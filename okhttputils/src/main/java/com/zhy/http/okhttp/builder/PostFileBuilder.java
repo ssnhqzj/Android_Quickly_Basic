@@ -51,7 +51,7 @@ public class PostFileBuilder extends OkHttpRequestBuilder
     }
 
     @Override
-    public PostFileBuilder params(Map<String, String> params)
+    public PostFileBuilder addParams(Map<String, Object> params)
     {
         this.params = params;
         return this;
