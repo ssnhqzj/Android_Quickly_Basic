@@ -1,4 +1,4 @@
-package gzt.com.apptest.Chat;
+package com.qzj.chat.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.NinePatch;
 import android.graphics.Paint;
+import android.graphics.PointF;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
@@ -30,7 +31,7 @@ public class ChatItemLayout extends LinearLayout {
     /**
      * 遮罩层颜色
      */
-    private int coveringColor = 0x88D4D4D4;
+    private int coveringColor = 0x66000000;
     /**
      * 遮罩层透明度
      */
@@ -76,6 +77,9 @@ public class ChatItemLayout extends LinearLayout {
         }
         switch (event.getAction()){
             case MotionEvent.ACTION_DOWN:
+                PointF pointF = new PointF();
+                pointF.set(event.getRawX(),event.getRawY());
+                this.setTag(pointF);
                 lastY = event.getRawY();
                 getParent().requestDisallowInterceptTouchEvent(true);
                 break;
@@ -110,7 +114,7 @@ public class ChatItemLayout extends LinearLayout {
             // 设置混合模式
             paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
             // 绘制源图
-            paint.setColor(coveringColor);this.getBackground();
+            paint.setColor(coveringColor);
             paint.setAlpha(coveringAlpha);
             canvas.drawPaint(paint);
             paint.setXfermode(null);
@@ -157,6 +161,7 @@ public class ChatItemLayout extends LinearLayout {
                 postInvalidate();
             }
         }).start();
+
         new Thread(new Runnable() {
             @Override
             public void run() {

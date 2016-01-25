@@ -7,13 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-
 import java.util.ArrayList;
 
 import gzt.com.apptest.Chat.bean.ChatItem;
-import gzt.com.apptest.Chat.uitls.ImageLoaderUtil;
 import gzt.com.apptest.Chat.uitls.PopupWindowUtil;
 import gzt.com.apptest.Chat.viewholder.LeftImageHolder;
 import gzt.com.apptest.Chat.viewholder.LeftTextHolder;
@@ -90,15 +86,15 @@ public class ChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 break;
 
             case ChatItem.LAYOUT_LEFT_IMAGE:
-                ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(context));
-                ImageLoader.getInstance().displayImage(msgData.get(position).getImageUrl(),
-                        ((LeftImageHolder) viewHolder).imageView, ImageLoaderUtil.getHeadNoCacheOptions());
+//                ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(context));
+//                ImageLoader.getInstance().displayImage(msgData.get(position).getImageUrl(),
+//                        ((LeftImageHolder) viewHolder).imageView, ImageLoaderUtil.getHeadNoCacheOptions());
                 break;
 
             case ChatItem.LAYOUT_RIGHT_IMAGE:
-                ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(context));
-                ImageLoader.getInstance().displayImage(msgData.get(position).getImageUrl(),
-                        ((RightImageHolder)viewHolder).imageView, ImageLoaderUtil.getHeadNoCacheOptions());
+//                ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(context));
+//                ImageLoader.getInstance().displayImage(msgData.get(position).getImageUrl(),
+//                        ((RightImageHolder)viewHolder).imageView, ImageLoaderUtil.getHeadNoCacheOptions());
                 break;
 
             case ChatItem.LAYOUT_LEFT_VOICE:

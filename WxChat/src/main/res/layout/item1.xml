@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.qzj.chat.view.ChatImageView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/chat_item_layout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:maxWidth="200dp"
+    android:background="@drawable/chatto_bg_normal"
+    android:src="@mipmap/test_2">
+
+
+
+</com.qzj.chat.view.ChatImageView>

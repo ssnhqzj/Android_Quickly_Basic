@@ -1,4 +1,4 @@
-package gzt.com.apptest.Chat;
+package com.qzj.chat.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -7,22 +7,25 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.NinePatch;
 import android.graphics.Paint;
+import android.graphics.PointF;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 
 /**
- * 聊天item的根布局
+ * 点击后显示遮罩层的ImageView
  * Created by qzj on 2015/12/5.
  */
-public class ChatItemLayout extends LinearLayout {
+public class ChatImageView extends ImageView {
     private static final int CLICK_INTERVAL_TIME = 80;
     private static final int LONG_CLICK_INTERVAL_TIME = 500;
 
+    private static final int MAX_WIDTH = 100;
     /**
      * 是否显示遮罩层
      */
@@ -30,7 +33,23 @@ public class ChatItemLayout extends LinearLayout {
     /**
      * 遮罩层颜色
      */
-    private int coveringColor = 0x88D4D4D4;
+    private int coveringColor = 0x44FF0000;
+    /**
+     * 进度颜色
+     */
+    private int progressColor = 0x88000000;
+    /**
+     * 是否显示进度
+     */
+    private boolean isShowProgress;
+    /**
+     * 是否完成
+     */
+    private boolean isProgressFinished = false;
+    /**
+     * 是否正在进行
+     */
+    private boolean isProgressing = false;
     /**
      * 遮罩层透明度
      */
@@ -40,17 +59,18 @@ public class ChatItemLayout extends LinearLayout {
     private int h;
     private int bgId;
     private float lastY;
+    private float progress;
     private GestureDetector detector;
 
-    public ChatItemLayout(Context context) {
-        this(context,null);
+    public ChatImageView(Context context) {
+        this(context, null);
     }
 
-    public ChatItemLayout(Context context, AttributeSet attrs) {
-        this(context,attrs,0);
+    public ChatImageView(Context context, AttributeSet attrs) {
+        this(context, attrs, 0);
     }
 
-    public ChatItemLayout(Context context, AttributeSet attrs, int defStyleAttr) {
+    public ChatImageView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.setClickable(true);
         this.setLongClickable(true);
@@ -64,18 +84,15 @@ public class ChatItemLayout extends LinearLayout {
     }
 
     @Override
-    public boolean onInterceptTouchEvent(MotionEvent ev) {
-        return true;
-    }
-
-    @Override
     public boolean onTouchEvent(MotionEvent event) {
-        boolean result = super.onTouchEvent(event);
+        super.onTouchEvent(event);
         if(detector.onTouchEvent(event)){
             event.setAction(MotionEvent.ACTION_CANCEL);
         }
         switch (event.getAction()){
-            case MotionEvent.ACTION_DOWN:
+            case MotionEvent.ACTION_DOWN:PointF pointF = new PointF();
+                pointF.set(event.getRawX(),event.getRawY());
+                this.setTag(pointF);
                 lastY = event.getRawY();
                 getParent().requestDisallowInterceptTouchEvent(true);
                 break;
@@ -95,11 +112,11 @@ public class ChatItemLayout extends LinearLayout {
                 break;
         }
 
-        return result;
+        return true;
     }
 
     @Override
-    protected synchronized void onDraw(Canvas canvas) {
+    protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         if (isShowCovering){
@@ -110,12 +127,30 @@ public class ChatItemLayout extends LinearLayout {
             // 设置混合模式
             paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
             // 绘制源图
-            paint.setColor(coveringColor);this.getBackground();
+            paint.setColor(coveringColor);
             paint.setAlpha(coveringAlpha);
             canvas.drawPaint(paint);
             paint.setXfermode(null);
             canvas.restoreToCount(saveCount);
         }
+
+        if (isShowProgress){
+            int progressHeight = (int) (h*progress);
+            canvas.clipRect(new Rect(0,h-progressHeight,w,h));
+            int saveCount = canvas.saveLayer(0, 0, w, h, paint, Canvas.ALL_SAVE_FLAG);
+            drawNinePath(canvas, bgId, new Rect(0, 0, w, h));
+            paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+            paint.setColor(progressColor);
+            canvas.drawPaint(paint);
+            paint.setXfermode(null);
+            canvas.restoreToCount(saveCount);
+        }
+    }
+
+    public void drawNinePath(Canvas canvas, int id, Rect rect){
+        Bitmap bmp= BitmapFactory.decodeResource(getResources(), id);
+        NinePatch patch = new NinePatch(bmp, bmp.getNinePatchChunk(), null);
+        patch.draw(canvas, rect);
     }
 
     @Override
@@ -123,29 +158,6 @@ public class ChatItemLayout extends LinearLayout {
         super.onSizeChanged(w, h, oldw, oldh);
         this.w = w;
         this.h = h;
-    }
-
-    private void drawNinePath(Canvas canvas, int id, Rect rect){
-        Bitmap bmp= BitmapFactory.decodeResource(getResources(), id);
-        NinePatch patch = new NinePatch(bmp, bmp.getNinePatchChunk(), null);
-        patch.draw(canvas, rect);
-    }
-
-    public ChatItemLayout setCoveringColor(int coveringColor) {
-        if (coveringColor != 0)
-            this.coveringColor = coveringColor;
-        return this;
-    }
-
-    public ChatItemLayout setCoveringAlpha(int coveringAlpha) {
-        this.coveringAlpha = coveringAlpha;
-        return this;
-    }
-
-    public ChatItemLayout setBgId(int bgId) {
-        if (bgId != 0)
-            this.bgId = bgId;
-        return this;
     }
 
     @Override
@@ -192,6 +204,46 @@ public class ChatItemLayout extends LinearLayout {
         return true;
     }
 
+    public float getProgress() {
+        return progress;
+    }
+
+    /**
+     * 设置当前进度
+     * @param progress value in 0~1.0
+     */
+    public void setProgress(float progress) {
+        if (isProgressFinished) return;
+        if (progress >= 1.0f){
+            this.progress = 1.0f;
+            invalidate();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    postInvalidate();
+                    isShowProgress = false;
+                    isProgressFinished = true;
+                }
+            },1000);
+        }else{
+            this.progress = progress;
+            isShowProgress = true;
+            invalidate();
+        }
+    }
+
+    public void setIsShowProgress(boolean isShowProgress) {
+        this.isShowProgress = isShowProgress;
+    }
+
+    public void setCoveringColor(int coveringColor) {
+        this.coveringColor = coveringColor;
+    }
+
+    public void setCoveringAlpha(int coveringAlpha) {
+        this.coveringAlpha = coveringAlpha;
+    }
+
     class GestureListener extends GestureDetector.SimpleOnGestureListener {
 
         @Override
@@ -214,5 +266,6 @@ public class ChatItemLayout extends LinearLayout {
         public boolean onDoubleTapEvent(MotionEvent e) {
             return super.onDoubleTapEvent(e);
         }
+
     }
 }

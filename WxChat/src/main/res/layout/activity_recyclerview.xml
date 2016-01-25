@@ -1,0 +1,159 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:background="@android:color/black">
+
+    <RelativeLayout
+        android:id="@+id/chat_title"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/chat_room_toolbar_bg">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:paddingRight="15dp"
+            android:paddingLeft="15dp"
+            android:drawableLeft="@mipmap/chat_toolbar_back"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:textColor="#FFFFFF"
+            android:text="Elle"/>
+
+        <TextView
+            android:id="@+id/chat_room_toolbar_more"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:paddingRight="15dp"
+            android:paddingLeft="15dp"
+            android:gravity="center"
+            android:drawableRight="@mipmap/chat_toolbar_point"/>
+
+    </RelativeLayout>
+
+    <!-- 消息列表 -->
+    <com.jcodecraeer.xrecyclerview.XRecyclerView
+        android:id="@+id/recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/input_board"
+        android:layout_below="@+id/chat_title"
+        android:background="#E6E8E3"/>
+
+    <LinearLayout
+        android:id="@+id/input_board"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#EEEEEE"
+        android:orientation="vertical">
+
+        <!-- 工具条 -->
+        <RelativeLayout
+            android:id="@+id/rl_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp">
+
+            <CheckBox
+                android:id="@+id/btn_voice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="8dip"
+                android:layout_alignBottom="@+id/et_sendmessage_rl"
+                style="@style/ChatVoiceCheckboxStyle"/>
+
+            <RelativeLayout
+                android:id="@+id/et_sendmessage_rl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/btn_send_image_group"
+                android:layout_toRightOf="@+id/btn_voice">
+
+                <com.qzj.chat.face.PasteEditText
+                    android:id="@+id/et_sendmessage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/btn_face"
+                    android:maxLines="3"
+                    android:minHeight="35dp"
+                    android:paddingLeft="5dp"
+                    android:paddingStart="5dp"
+                    android:visibility="visible"/>
+
+                <Button
+                    android:id="@+id/btn_press_say"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/btn_face"
+                    android:gravity="center"
+                    android:minHeight="35dp"
+                    android:text="按住 说话"
+                    android:visibility="gone"/>
+
+                <CheckBox
+                    android:id="@+id/btn_face"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_alignBottom="@+id/et_sendmessage"
+                    android:paddingBottom="2dp"
+                    style="@style/ChatFaceCheckboxStyle"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/btn_send_image_group"
+                android:layout_width="50dp"
+                android:layout_height="35dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignBottom="@+id/et_sendmessage_rl">
+
+                <TextView
+                    android:id="@+id/btn_send"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:background="#008000"
+                    android:textColor="@android:color/white"
+                    android:text="发送"
+                    android:visibility="gone"/>
+
+                <CheckBox
+                    android:id="@+id/btn_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginRight="3dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerVertical="true"
+                    style="@style/ChatImageCheckboxStyle"/>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <!-- 输入面板 -->
+        <LinearLayout
+            android:id="@+id/choose_board"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

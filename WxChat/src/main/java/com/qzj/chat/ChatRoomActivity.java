@@ -1,4 +1,4 @@
-package gzt.com.apptest.Chat;
+package com.qzj.chat;
 
 import android.content.Intent;
 import android.graphics.Rect;
@@ -22,20 +22,26 @@ import android.widget.TextView;
 
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
+import com.qzj.chat.adapter.ChatListAdapter;
+import com.qzj.chat.bean.ChatItem;
+import com.qzj.chat.controller.ImageController;
+import com.qzj.chat.controller.VoiceController;
+import com.qzj.chat.face.FaceConversionUtil;
+import com.qzj.chat.face.FaceRelativeLayout;
+import com.qzj.chat.face.PasteEditText;
+import com.qzj.chat.uitls.DeviceUtils;
+import com.qzj.chat.uitls.popup.PopupWindowUtil;
+import com.qzj.chat.uitls.watcher.Observer;
 
 import java.util.ArrayList;
 
-import gzt.com.apptest.Chat.adapter.ChatListAdapter;
-import gzt.com.apptest.Chat.bean.ChatItem;
-import gzt.com.apptest.Chat.controller.ImageController;
-import gzt.com.apptest.Chat.controller.VoiceController;
-import gzt.com.apptest.Chat.face.FaceConversionUtil;
-import gzt.com.apptest.Chat.face.FaceRelativeLayout;
-import gzt.com.apptest.Chat.face.PasteEditText;
-import gzt.com.apptest.Chat.uitls.DeviceUtils;
 import gzt.com.apptest.R;
 
-public class ChatRoomActivity extends AppCompatActivity implements View.OnClickListener {
+
+public class ChatRoomActivity extends AppCompatActivity implements View.OnClickListener,Observer {
+
+    // toolbar
+    private TextView toolbarMore;
 
     // 键盘高度
     private static int keyBroadHeight;
@@ -46,6 +52,7 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
     private ArrayList<View> eventViews;
 
     private XRecyclerView mRecyclerView;
+    private LinearLayoutManager layoutManager;
     private ChatListAdapter mAdapter;
 
     private ArrayList<ChatItem> msgData;
@@ -66,11 +73,10 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
         inflater = LayoutInflater.from(this);
         chooseBroad = (LinearLayout) findViewById(R.id.choose_board);
         mRecyclerView = (XRecyclerView)this.findViewById(R.id.recyclerview);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         layoutManager.setReverseLayout(true);
         mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.addItemDecoration(new ChatListAdapter.SpaceItemDecoration(50));
 
         mRecyclerView.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
         mRecyclerView.setLaodingMoreProgressStyle(ProgressStyle.BallRotate);
@@ -100,24 +106,16 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
             msgData.add(item);
         }
         mAdapter = new ChatListAdapter(this,msgData);
+//        mAdapter.setHasStableIds(true);
         mRecyclerView.setAdapter(mAdapter);
 
+        initToolbar();
         initBroadView();
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK && (requestCode == DeviceUtils.REQUEST_CODE_ALBUM
-                || requestCode == DeviceUtils.REQUEST_CODE_CAMERA)) {
-            String path = DeviceUtils.getReturnImagePath(requestCode, resultCode, data, this);
-            Log.e("qzj", "--------------------image path------------------ " + path);
-            ChatItem item = new ChatItem();
-            item.setLayoutType(ChatItem.LAYOUT_RIGHT_IMAGE);
-            item.setImageUrl("file://" + path);
-            msgData.add(0,item);
-            mAdapter.setMsgData(msgData);
-            mAdapter.notifyDataSetChanged();
-        }
+    private void initToolbar(){
+        toolbarMore = (TextView) findViewById(R.id.chat_room_toolbar_more);
+        toolbarMore.setOnClickListener(this);
     }
 
     /**
@@ -149,7 +147,7 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
         eventViews.add(imageBtn);
         eventViews.add(voiceBtn);
 
-        new VoiceController(this,record);
+        new VoiceController(this,record).attach(this);
     }
 
     @Override
@@ -172,10 +170,11 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
             case R.id.btn_send:
                 SpannableString spannableString = FaceConversionUtil.getInstace().getExpressionString(this, msgEditText.getText().toString());
                 ChatItem item = new ChatItem();
-                item.setLayoutType(ChatItem.LAYOUT_LEFT_TEXT);
+                item.setLayoutType(ChatItem.LAYOUT_RIGHT_TEXT);
                 item.setText(spannableString);
                 msgData.add(0,item);
                 mAdapter.notifyDataSetChanged();
+                layoutManager.scrollToPosition(0);
                 msgEditText.setText("");
                 break;
 
@@ -193,8 +192,10 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
 
             // 点击切换图片按钮
             case R.id.btn_image:
+                Log.e("qzj","点击了图片按钮");
                 // 选中图片按钮
                 if (imageBtn.isChecked()){
+                    msgEditText.setFocusable(false);
                     checkedChooseBroad(true);
                     fillImageView();
                     cancelOtherState(imageBtn);
@@ -212,6 +213,11 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
                 }else{
                     fillVoiceView(false);
                 }
+                break;
+
+            // 点击toolbar上的更多
+            case R.id.chat_room_toolbar_more:
+                PopupWindowUtil.showPwMore(this, toolbarMore);
                 break;
 
         }
@@ -286,16 +292,18 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
     }
 
     /**
-     * 是否选中表情或者图片选中面板
+     * 是否选中表情或者图片选择面板
      * @param isChecked
      */
     private void checkedChooseBroad(boolean isChecked){
         if (isChecked){
+            cancelEditTextFocus(msgEditText);
             setChooseBroadHeight(keyBroadHeight);
             DeviceUtils.hideSoftKeyBoard(ChatRoomActivity.this);
             DeviceUtils.isAdjustWindow(ChatRoomActivity.this, false);
             chooseBroad.requestLayout();
         }else{
+            requestEditTextFocus(msgEditText);
             setChooseBroadHeight(0);
             DeviceUtils.isAdjustWindow(ChatRoomActivity.this, true);
             DeviceUtils.showSoftKeyBoard(ChatRoomActivity.this);
@@ -319,6 +327,58 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK && (requestCode == DeviceUtils.REQUEST_CODE_ALBUM
+                || requestCode == DeviceUtils.REQUEST_CODE_CAMERA)) {
+            String path = DeviceUtils.getReturnImagePath(requestCode, resultCode, data, this);
+            Log.e("qzj", "--------------------image path------------------ " + path);
+            ChatItem item = new ChatItem();
+            item.setIsSend(true);
+            item.setLayoutType(ChatItem.LAYOUT_RIGHT_IMAGE);
+            item.setImageUrl("file://" + path);
+            msgData.add(0, item);
+            mAdapter.setMsgData(msgData);
+            mAdapter.notifyItemInserted(0);
+            mRecyclerView.smoothScrollToPosition(0);
+        }
+    }
+
+    @Override
+    public void update(int what,Object obj) {
+        if (what == VoiceController.WATCHER_WHAT_VOICE){
+            if (obj != null) {
+                Bundle bundle = (Bundle) obj;
+                ChatItem item = new ChatItem();
+                item.setLayoutType(ChatItem.LAYOUT_RIGHT_VOICE);
+                item.setVoiceUrl("file://" + bundle.get("voicePath"));
+                item.setVoiceSecond(bundle.getInt("recodeTime"));
+                msgData.add(0, item);
+                mAdapter.setMsgData(msgData);
+                mAdapter.notifyDataSetChanged();
+                layoutManager.scrollToPosition(0);
+            }
+        }
+    }
+
+    /**
+     * EditText获取焦点
+     * @param editText
+     */
+    private void cancelEditTextFocus(EditText editText){
+        editText.setFocusable(false);
+    }
+
+    /**
+     * EditText取消焦点
+     * @param editText
+     */
+    private void requestEditTextFocus(EditText editText){
+        editText.setFocusable(true);
+        editText.setFocusableInTouchMode(true);
+        editText.requestFocus();
+    }
+
     /**
      * 消息EditText触摸监听
      */
@@ -328,6 +388,7 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
         public boolean onTouch(View v, MotionEvent event) {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
+                    Log.e("qzj","触摸了文本框");
                     // 只要触摸了EditText都要设置成可调整
                     checkedChooseBroad(false);
                     cancelOtherState(msgEditText);
@@ -365,17 +426,6 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
     }
 
     /**
-     * 录音touch监听
-     */
-    class RecordTouchListener implements View.OnTouchListener{
-
-        @Override
-        public boolean onTouch(View v, MotionEvent event) {
-            return false;
-        }
-    }
-
-    /**
      * 监听软键盘高度变化
      */
     class SoftBroadChangeListener implements ViewTreeObserver.OnGlobalLayoutListener{
@@ -391,6 +441,8 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
                     keyBroadHeight = heightDifference;
                     DeviceUtils.saveKeyBroadHeight(ChatRoomActivity.this,keyBroadHeight);
                 }
+            }else{
+
             }
         }
     }
