@@ -1,0 +1,9 @@
+
+Shallow size就是对象本身占用内存的大小，不包含其引用的对象。常规对象（非数组）的Shallow size有其成员变量的数量和类型决定。
+数组的shallow size有数组元素的类型（对象类型、基本类型）和数组长度决定。
+Shallow size of a set of objects represents the sum of shallow sizes of all objects in the set.
+在32位系统上，对象头占用8字节，int占用4字节，不管成员变量（对象或数组）是否引用了其他对象（实例）或者赋值为null它始终占用4字节。
+故此，对于String对象实例来说，它有三个int成员（3*4=12字节）、一个char[]成员（1*4=4字节）以及一个对象头（8字节），
+总共3*4 +1*4+8=24字节。根据这一原则，对String a=”rosen jiang”来说，实例a的shallow size也是24字节。
+
+文章地址：http://blog.csdn.net/kingzone_2008/article/details/9083327
