@@ -1,0 +1,60 @@
+
+*****************本库使用友盟V5版本****************************
+
+1. 引入该库到目标项目
+2. 在目标项目的application中注册UmengApp.umengAppSetting()
+3. 在需要分享的事件中加入如下代码打开默认umeng分享面板：
+final SHARE_MEDIA[] displaylist = new SHARE_MEDIA[] {
+                        SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE
+                };
+                new ShareAction(UmengActivity.this)
+                        .setDisplayList(displaylist)
+                        .setShareboardclickCallback(shareBoardlistener)
+                        .open();
+
+4. 实现以下监听：
+private ShareBoardlistener shareBoardlistener = new ShareBoardlistener() {
+
+        @Override
+        public void onclick(SnsPlatform snsPlatform, SHARE_MEDIA share_media) {
+            Log.e("qzj", "share_media: " + share_media);
+            /*UMVideo video = new UMVideo("http://video.sina.com.cn/p/sports/cba/v/2013-10-22/144463050817.html");
+            new ShareAction(UmengActivity.this)
+                    .setPlatform(SHARE_MEDIA.WEIXIN)
+                    .setCallback(umShareListener)
+                    .withText("hello wx")
+                    .withMedia(video)
+                    .share();*/
+            new ShareAction(UmengActivity.this)
+                    .setPlatform(share_media)
+                    .setCallback(umShareListener)
+                    .withText("多平台分享")
+                    .share();
+        }
+    };
+
+    private UMShareListener umShareListener = new UMShareListener() {
+        @Override
+        public void onResult(SHARE_MEDIA platform) {
+            Toast.makeText(UmengActivity.this, platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA platform, Throwable t) {
+            Toast.makeText(UmengActivity.this,platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA platform) {
+            Toast.makeText(UmengActivity.this, platform + " 分享取消了", Toast.LENGTH_SHORT).show();
+        }
+    };
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+    }
+
+4. 需要自定义分享面板参考友盟官方文档：
+    http://dev.umeng.com/social/android/android-update
