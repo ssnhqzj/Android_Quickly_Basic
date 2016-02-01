@@ -1,0 +1,238 @@
+
+android平台支持多进程通信，也支持应用内实现多进程，那么多进程应该能为我们带来什么呢？
+
+  我们都知道，android平台对应用都有内存限制，其实这个理解有点问题，应该是说android平台对每个进程有内存限制，比如某机型对对进程限制是24m，
+如果应用有两个进程，则该应该的总内存限制是2*24m。使用多进程就可以使得我们一个apk所使用的内存限制加大几倍。所以可以借此图片平台对应用的内存限制，
+比如一些要对图片、视频、大文件进程处理的好内存的应用可以考虑用多进程来解决应用操作不流畅问题。
+
+实现多进程可以通过设置service、broadcast、activity的标签android:process来实现。
+一般情况下启动这些组件默认是在同一个进程里运行的，如果设置了android:process标签，则会运行在其他进程里。
+如果android:process的value不是":"开头，则系统里有同样名字的进程的话，会放到已存在的同名进程里运行，这样能减小消耗。
+如果android:process的value是以":"开头，则启动一个名字为value的进程。
+
+实现应用多进程之后，就是进程间通信啦
+进程间通信有两种实现方式：
+1，用系统框架实现
+2，自己实现AIDL
+
+系统框架实现进程通信有用过Service，Broadcast，Activity，ContentProvider
+转自：http://www.eoeandroid.com/thread-320076-1-1.html
+
+Android中，默认一个APK包就对应一个进程，其进程名就为AndroidManifest.xml文件中 指定的package名。
+我们可以通过Activity, Service, BroadCastReceiver, ContentProvider的android:process属性来实现单APK多进程，但是需要注意进程间内存的不
+可见性。
+
+每开启一个进程都会单独执行Application，所以在一个进程中修改Application中的静态变量不会影响在其他进程中访问的结果，因为不同进程使用不同的
+内存区域。
+
+
+****************************************************************************************************
+AIDL进程间通信：
+
+AIDL是IPC的一个轻量级实现，用了对于Java开发者来说很熟悉的语法。Android也提供了一个工具，可以自动创建Stub（类构架，类骨架）。
+当我们需要在应用间通信时，我们需要按以下几步走：
+1. 定义一个AIDL接口
+2. 为远程服务（Service）实现对应Stub
+3. 将服务“暴露”给客户程序使用
+
+##
+AIDL的语法很类似Java的接口（Interface），只需要定义方法的签名。
+AIDL支持的数据类型与Java接口支持的数据类型有些不同
+1. 所有基础类型（int, char, 等）
+2. String，List，Map，CharSequence等类
+3. 其他AIDL接口类型
+4. 所有Parcelable的类
+
+##
+示例：
+
+1. 我们需要创建一个服务端项目(ServerApp)和一个客户端项目(ClientApp),ServerApp提供远程访问服务，暴露给ClientApp访问.
+
+2. ServerApp操作:
+    # 创建一个AIDL文件夹,右键项目 -- New -- Folder -- AIDL Folder
+    # 在aidl文件夹中创建一个包名，例如：com.qzj.aidl
+    # 在包下创建一个aidl文件，例如：IMyFirstAidl.aidl,内容如下：
+    ------------------------------------------------------------------------------------------------
+    package com.qzj.aidl;
+    import com.qzj.aidl.Girl;
+
+    // Declare any non-default types here with import statements
+    interface IMyFirstAidl {
+        /**
+         * Demonstrates some basic types that you can use as parameters
+         * and return values in AIDL.
+         */
+        int add(int value1, int value2);
+
+        Girl getGirl();
+    }
+    ------------------------------------------------------------------------------------------------
+
+
+    # 由于Girl是一个自定义对象，所以在包下还需要创建一个 Girl.aidl 内容如下:
+    ------------------------------------------------------------------------------------------------
+    // Girl.aidl
+    package com.qzj.aidl;
+
+    // Declare any non-default types here with import statements
+
+    parcelable Girl;
+    ------------------------------------------------------------------------------------------------
+
+
+    # 然后创建一个Girl对象，并实现Parcelable接口，代码如下：
+    ------------------------------------------------------------------------------------------------
+    package com.qzj.aidl;
+
+    import android.os.Parcel;
+    import android.os.Parcelable;
+
+    /**
+     * Created by Administrator on 2016/2/1.
+     */
+    public class Girl implements Parcelable {
+
+        String name;
+        int age;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public int getAge() {
+            return age;
+        }
+
+        public void setAge(int age) {
+            this.age = age;
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(name);
+            dest.writeInt(age);
+        }
+
+        public static final Creator<Girl> CREATOR = new Creator<Girl>() {
+            @Override
+            public Girl createFromParcel(Parcel source) {
+                Girl girl = new Girl();
+                girl.setName(source.readString());
+                girl.setAge(source.readInt());
+                return girl;
+            }
+
+            @Override
+            public Girl[] newArray(int size) {
+                return new Girl[size];
+            }
+        };
+    }
+    ------------------------------------------------------------------------------------------------
+
+
+    # 然后创建一个service，MyFirstAidlService
+    ------------------------------------------------------------------------------------------------
+    import android.app.Service;
+    import android.content.Intent;
+    import android.os.IBinder;
+    import android.os.RemoteException;
+    import android.util.Log;
+
+    import com.qzj.aidl.Girl;
+    import com.qzj.aidl.IMyFirstAidl;
+
+    public class MyFirstAidlService extends Service {
+        public MyFirstAidlService() {
+        }
+
+        IMyFirstAidl.Stub binder = new IMyFirstAidl.Stub() {
+            @Override
+            public int add(int value1, int value2) throws RemoteException {
+                Log.e("qzj","=============== value2 + value1 ==================");
+                return value1+value2;
+            }
+
+            @Override
+            public Girl getGirl() throws RemoteException {
+                Girl girl = new Girl();
+                girl.setName("AngleBaby");
+                girl.setAge(20);
+                return girl;
+            }
+        };
+
+        @Override
+        public IBinder onBind(Intent intent) {
+            // TODO: Return the communication channel to the service.
+            return binder;
+        }
+    }
+    ------------------------------------------------------------------------------------------------
+
+
+    # 然后在AndroidManifest.xml中注册service：
+    ------------------------------------------------------------------------------------------------
+    <service
+        android:name=".MyFirstAidlService"
+        android:enabled="true"
+        android:exported="true">
+        <intent-filter>
+            <action android:name="com.qzj.aidl.MyFirstAidlService"></action>
+        </intent-filter>
+    </service>
+    ------------------------------------------------------------------------------------------------
+
+    # 在MainActivity中启动此服务：
+    ------------------------------------------------------------------------------------------------
+    Intent intent = new Intent();
+    intent.setClass(this, MyFirstAidlService.class);
+    startService(intent);
+    ------------------------------------------------------------------------------------------------
+
+3. ClientApp操作:
+
+    # 创建一个AIDL文件夹,右键项目 -- New -- Folder -- AIDL Folder
+    # 在aidl文件夹中创建一个包名，此处的报名必须和服务端的一致，所以直接拷贝服务端的到此处OK，将包中的aidl文件也一并
+      拷贝过来
+    # 将自定义对象Girl拷贝过来，包名同样必须一致。
+    # 然后在需要的地方实现以下代码来调用远程服务：
+
+    ServiceConnection connection = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                iMyFirstAidl = IMyFirstAidl.Stub.asInterface(service);
+                try {
+                    int value1 = 10;
+                    int value2 = 20;
+                    int addResult = iMyFirstAidl.add(value1, value2);
+                    Log.e("qzj","============ value1 + value2============== " + addResult);
+
+                    Girl girl = iMyFirstAidl.getGirl();
+                    Log.e("qzj","============ girl ============== " + girl.toString());
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+                iMyFirstAidl = null;
+            }
+     };
+
+
+     # 开启服务即可
+     Intent intent=new Intent("com.qzj.aidl.MyFirstAidlService");
+     // 包名为manifest中的package
+     intent.setPackage("gzt.com.apptest");
+     bindService(intent, connection, BIND_AUTO_CREATE);
