@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dgfc_self_address"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:paddingRight="20dp"
+    android:paddingLeft="20dp"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="寄件人地址"/>
+
+    <TextView
+        android:id="@+id/dgfc_self_address_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/sender_addr_edit_selector"
+        android:clickable="true"/>
+
+    <TextView
+        android:id="@+id/dgfc_self_address_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:layout_below="@+id/dgfc_self_address_edit"
+        android:maxLines="3"
+        android:gravity="center_vertical"/>
+
+    <com.qzj.logistics.ui.DrawableCenterTextView
+        android:id="@+id/dgfc_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        android:layout_below="@+id/dgfc_self_address_detail"
+        android:background="@drawable/common_btn_main_selector_r"
+        android:drawableLeft="@mipmap/add"
+        android:drawablePadding="5dp"
+        android:clickable="true"
+        android:textColor="@color/common_white"
+        android:text="添加"
+        android:visibility="gone"/>
+
+    <com.qzj.logistics.ui.DrawableCenterTextView
+        android:id="@+id/dgfc_print"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dgfc_self_address_detail"
+        android:layout_alignParentRight="true"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        android:background="@drawable/common_btn_main_selector_r"
+        android:drawableLeft="@mipmap/print"
+        android:drawablePadding="5dp"
+        android:clickable="true"
+        android:textColor="@color/common_white"
+        android:text="打印"/>
+
+</RelativeLayout>

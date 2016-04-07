@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/user_center_bg"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context="com.qzj.logistics.view.usercenter.RegisterActivity">
+
+    <include layout="@layout/tool_bar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/register_root"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingTop="30dp"
+            android:paddingBottom="30dp">
+
+            <com.qzj.logistics.ui.LineEditText
+                android:id="@+id/register_user_name"
+                style="@style/LineEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@mipmap/user"
+                android:hint="请输入姓名"/>
+
+            <com.qzj.logistics.ui.LineEditText
+                android:id="@+id/register_phone"
+                style="@style/LineEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:drawableLeft="@mipmap/phone"
+                android:inputType="phone"
+                android:hint="请输入电话号码"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <com.qzj.logistics.ui.LineEditText
+                    android:id="@+id/register_put_auth_code"
+                    style="@style/LineEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/register_get_auth_code"
+                    android:layout_alignBottom="@+id/register_get_auth_code"
+                    android:layout_marginRight="10dp"
+                    android:inputType="number"
+                    android:hint="请输入验证码"/>
+
+                <Button
+                    android:id="@+id/register_get_auth_code"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:minWidth="90dp"
+                    android:background="@drawable/common_btn_main_selector_r"
+                    android:textColor="@color/common_white"
+                    android:text="获取验证码"/>
+
+            </RelativeLayout>
+
+            <com.qzj.logistics.ui.LineEditText
+                android:id="@+id/register_location"
+                style="@style/LineEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:drawableLeft="@mipmap/map"
+                android:hint="请选择城市区域"
+                android:editable="false"
+                android:focusable="false"/>
+
+            <com.qzj.logistics.ui.LineEditText
+                android:id="@+id/register_location_detail"
+                style="@style/LineEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:hint="请输入详细地址"/>
+
+            <com.qzj.logistics.ui.LineEditText
+                android:id="@+id/register_email"
+                style="@style/LineEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:drawableLeft="@mipmap/email"
+                android:inputType="textEmailAddress"
+                android:hint="请输入Email"/>
+
+            <com.qzj.logistics.ui.LineEditText
+                android:id="@+id/register_letter"
+                style="@style/LineEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:drawableLeft="@mipmap/letter"
+                android:inputType="number"
+                android:maxLength="6"
+                android:hint="请输入邮编"/>
+
+            <com.qzj.logistics.ui.LineEditText
+                android:id="@+id/register_pw"
+                style="@style/LineEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:drawableLeft="@mipmap/password"
+                android:inputType="textPassword"
+                android:hint="请输入密码"/>
+
+            <com.qzj.logistics.ui.LineEditText
+                android:id="@+id/register_pw_sure"
+                style="@style/LineEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:drawableLeft="@mipmap/password"
+                android:inputType="textPassword"
+                android:hint="请再次输入密码" />
+
+            <TextView
+                android:id="@+id/register_hint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:paddingLeft="10dp"
+                android:textColor="@color/common_red"
+                android:textStyle="bold"/>
+
+            <RelativeLayout
+                android:id="@+id/register_commit"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/common_btn_main_selector_r">
+
+                <TextView
+                    android:id="@+id/register_btn_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:textColor="@color/common_white"
+                    android:textSize="16sp"
+                    android:text="@string/title_activity_register"/>
+
+                <com.qzj.loading.DotsTextView
+                    xmlns:dots="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/register_loading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_toRightOf="@+id/register_btn_text"
+                    android:textSize="30sp"
+                    android:textColor="@color/common_white"
+                    dots:autoplay="false"
+                    dots:period="1000"
+                    android:visibility="gone"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

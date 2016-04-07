@@ -29,6 +29,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import qzj.com.umeng.UmengApp;
+
 public class MyApplication extends Application {
 	
 	public static Context mContext;
@@ -65,6 +67,9 @@ public class MyApplication extends Application {
 		AssetsDatabaseManager.initManager(this);
 		am = AssetsDatabaseManager.getManager();
 		am.createDatabase();
+
+		// 初始化友盟
+		UmengApp.umengAppSetting();
 	}
 	
 	

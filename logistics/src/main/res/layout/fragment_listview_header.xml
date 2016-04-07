@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:orientation="horizontal">
+
+    <Spinner
+        android:id="@+id/dgfc_spinner_person"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:minHeight="32dp"
+        android:layout_weight="1"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/spinner_selector"
+        android:spinnerMode="dialog">
+
+    </Spinner>
+
+    <Spinner
+        android:id="@+id/dgfc_spinner_company"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:minHeight="32dp"
+        android:layout_weight="1"
+        android:layout_marginLeft="10dp"
+        android:background="@drawable/spinner_selector"
+        android:spinnerMode="dialog">
+
+    </Spinner>
+
+</LinearLayout>

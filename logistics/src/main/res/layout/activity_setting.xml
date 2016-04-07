@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/common_bg_deliver"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context="com.qzj.logistics.view.usercenter.RegisterActivity">
+
+    <include layout="@layout/tool_bar" />
+
+    <ListView
+        android:id="@+id/setting_listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="18dp"
+        android:dividerHeight="1dp">
+
+    </ListView>
+
+</LinearLayout>

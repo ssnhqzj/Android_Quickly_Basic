@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/user_center_item_root"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="20dp"
+        android:paddingRight="15dp"
+        android:background="@android:color/white">
+
+        <TextView
+            android:id="@+id/user_center_item_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_centerVertical="true"
+            android:text="检测更新"/>
+
+        <TextView
+            android:id="@+id/user_center_item_data"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_alignParentRight="true"
+            android:drawableRight="@mipmap/arrows_right"
+            android:gravity="center" />
+
+        <View
+            android:id="@+id/user_center_item_hint"
+            android:layout_width="5dp"
+            android:layout_height="5dp"
+            android:layout_alignBottom="@+id/user_center_item_name"
+            android:layout_marginTop="-3dp"
+            android:background="@drawable/red_hint"
+            android:visibility="gone"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

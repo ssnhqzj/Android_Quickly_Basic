@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:paddingBottom="15dp"
+    android:background="@color/common_white_F7F7F7"
+    android:orientation="vertical">
+
+    <com.qzj.logistics.ui.GrayLineEditText
+        android:id="@+id/dgc_name"
+        style="@style/GrayLineEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/dgc_history"
+        android:drawableLeft="@mipmap/user_gray"
+        android:layout_marginRight="5dp"
+        android:hint="请填写发货人姓名"
+        android:inputType="text|textNoSuggestions"/>
+
+    <com.qzj.logistics.ui.GrayLineEditText
+        android:id="@+id/dgc_phone"
+        style="@style/GrayLineEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:drawableLeft="@mipmap/phone_gray"
+        android:hint="请填写电话号码"
+        android:inputType="phone|textNoSuggestions"/>
+
+    <com.qzj.logistics.ui.GrayLineEditText
+        android:id="@+id/dgc_location"
+        style="@style/GrayLineEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:drawableLeft="@mipmap/map_gray"
+        android:singleLine="false"
+        android:maxLines="2"
+        android:hint="请选择城市区划"
+        android:editable="false"
+        android:focusable="false"
+        android:inputType="textMultiLine"/>
+
+    <com.qzj.logistics.ui.GrayLineEditText
+        android:id="@+id/dgc_addr"
+        style="@style/GrayLineEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:singleLine="false"
+        android:maxLines="2"
+        android:hint="请填写详细地址"
+        android:inputType="textMultiLine"/>
+
+    <com.qzj.logistics.ui.GrayLineEditText
+        android:id="@+id/dgc_postcode"
+        style="@style/GrayLineEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:drawableLeft="@mipmap/pc_gray"
+        android:hint="请填写邮编"
+        android:inputType="number"/>
+
+</LinearLayout>

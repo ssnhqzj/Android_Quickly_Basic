@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android" >
+    <solid android:color="@color/common_cancel_press" />
+
+    <corners android:radius="4dp"/>
+
+    <stroke android:color="@color/common_gray_808080" android:width="1dp" />
+
+    <padding
+        android:bottom="1dp"
+        android:left="2dp"
+        android:right="2dp"
+        android:top="1dp" />
+
+</shape>

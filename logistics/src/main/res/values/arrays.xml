@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--产品类别-->
+    <string-array name="product_types">
+        <item>请选择产品类别</item>
+        <item>家用电器</item>
+        <item>手机数码</item>
+        <item>电脑办公</item>
+        <item>家居家具</item>
+        <item>家装厨具</item>
+        <item>男装</item>
+        <item>女装</item>
+        <item>内衣</item>
+        <item>珠宝</item>
+        <item>个护化妆</item>
+        <item>清洁用品</item>
+        <item>鞋靴</item>
+        <item>箱包</item>
+        <item>钟表</item>
+        <item>奢侈品</item>
+        <item>运动户外</item>
+        <item>汽车用品</item>
+        <item>母婴</item>
+        <item>玩具乐器</item>
+        <item>食品</item>
+        <item>营养保健</item>
+        <item>图书音像</item>
+        <item>保险理财</item>
+    </string-array>
+
+</resources>

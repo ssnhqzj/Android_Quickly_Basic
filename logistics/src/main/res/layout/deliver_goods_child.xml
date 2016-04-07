@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:paddingBottom="15dp"
+    android:background="@color/common_white_F7F7F7"
+    android:orientation="vertical">
+
+    <Spinner
+        android:id="@+id/dgc_types"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="32dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/spinner_selector">
+
+    </Spinner>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.qzj.logistics.ui.GrayLineEditText
+            android:id="@+id/dgc_name"
+            style="@style/GrayLineEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/dgc_history"
+            android:drawableLeft="@mipmap/user_gray"
+            android:layout_marginRight="5dp"
+            android:hint="请填写收件人姓名"
+            android:inputType="text|textNoSuggestions"/>
+
+        <TextView
+            android:id="@+id/dgc_history"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_alignParentRight="true"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:gravity="center"
+            android:background="@drawable/common_btn_main_selector_r"
+            android:textColor="@color/common_white"
+            android:textSize="13sp"
+            android:text="历史联系人"/>
+
+    </RelativeLayout>
+
+    <com.qzj.logistics.ui.GrayLineEditText
+        android:id="@+id/dgc_phone"
+        style="@style/GrayLineEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:drawableLeft="@mipmap/phone_gray"
+        android:hint="请填写电话号码"
+        android:inputType="phone"/>
+
+    <com.qzj.logistics.ui.GrayLineEditText
+        android:id="@+id/dgc_location"
+        style="@style/GrayLineEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:drawableLeft="@mipmap/map_gray"
+        android:singleLine="false"
+        android:maxLines="2"
+        android:hint="请选择城市区划"
+        android:editable="false"
+        android:focusable="false"
+        android:inputType="textMultiLine"/>
+
+    <com.qzj.logistics.ui.GrayLineEditText
+        android:id="@+id/dgc_addr"
+        style="@style/GrayLineEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:hint="请填写详细地址"
+        android:inputType="textMultiLine"/>
+
+    <com.qzj.logistics.ui.GrayLineEditText
+        android:id="@+id/dgc_postcode"
+        style="@style/GrayLineEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:drawableLeft="@mipmap/pc_gray"
+        android:hint="请填写邮编"
+        android:maxLength="6"
+        android:inputType="number|textNoSuggestions"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.qzj.logistics.ui.GrayLineEditText
+            android:id="@+id/dgc_number"
+            style="@style/GrayLineEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/dgc_scan"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="5dp"
+            android:drawableLeft="@mipmap/ew_gray"
+            android:hint="请填写快递单号"
+            android:inputType="number"/>
+
+        <TextView
+            android:id="@+id/dgc_scan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignBottom="@+id/dgc_number"
+            android:drawableLeft="@mipmap/scan" />
+
+    </RelativeLayout>
+
+</LinearLayout>

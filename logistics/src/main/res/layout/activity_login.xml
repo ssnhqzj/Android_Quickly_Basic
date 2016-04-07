@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    android:background="@mipmap/user_center_bg"
+    tools:context="com.qzj.logistics.view.usercenter.LoginActivity">
+
+    <include layout="@layout/tool_bar"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="40dp"
+        android:orientation="vertical">
+
+        <com.qzj.logistics.ui.LineEditText
+            android:id="@+id/login_edit_user"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@mipmap/user"
+            android:inputType="phone"
+            android:textCursorDrawable="@drawable/cursor_color_white"
+            android:hint="请输入电话号码"
+            style="@style/LineEditText" />
+
+        <com.qzj.logistics.ui.LineEditText
+            android:id="@+id/login_edit_pw"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:drawableLeft="@mipmap/password"
+            android:inputType="textPassword"
+            android:textCursorDrawable="@drawable/cursor_color_white"
+            android:hint="请输入登录密码"
+            style="@style/LineEditText"/>
+
+        <TextView
+            android:id="@+id/login_forget_pw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="right"
+            android:textColor="@color/common_white"
+            android:text="忘记密码？"/>
+
+        <TextView
+            android:id="@+id/login_hint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="10dp"
+            android:textColor="@color/common_red"/>
+
+        <RelativeLayout
+            android:id="@+id/login_btn_login"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/common_btn_main_selector_r">
+
+            <TextView
+                android:id="@+id/login_btn_login_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:textColor="@color/login_btn_selector"
+                android:textSize="16sp"
+                android:text="@string/title_activity_login"/>
+
+            <com.qzj.loading.DotsTextView
+                xmlns:dots="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/login_loading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_toRightOf="@+id/login_btn_login_text"
+                android:textSize="20sp"
+                android:textColor="@color/common_white"
+                dots:autoplay="false"
+                dots:period="1000"
+                android:visibility="gone"/>
+
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

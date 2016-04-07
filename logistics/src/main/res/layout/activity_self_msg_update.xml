@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/common_bg_deliver"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context="com.qzj.logistics.view.usercenter.RegisterActivity">
+
+    <include layout="@layout/tool_bar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:layout_marginTop="30dp"
+                android:orientation="vertical">
+
+                <com.qzj.logistics.ui.GrayLineEditText
+                    android:id="@+id/self_msg_user_name"
+                    style="@style/GrayLineEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@mipmap/user_gray"
+                    android:inputType="text"
+                    android:hint="请输入姓名" />
+
+                <com.qzj.logistics.ui.GrayLineEditText
+                    android:id="@+id/self_msg_phone"
+                    style="@style/GrayLineEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:drawableLeft="@mipmap/phone_gray"
+                    android:inputType="phone"
+                    android:hint="请输入电话号码"
+                    android:visibility="gone"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp">
+
+                    <com.qzj.logistics.ui.GrayLineEditText
+                        android:id="@+id/self_msg_select_area"
+                        style="@style/GrayLineEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@mipmap/map_gray"
+                        android:focusable="false"
+                        android:inputType="text"
+                        android:hint="请选择城市区划"
+                        android:visibility="gone"/>
+
+                    <com.qzj.logistics.ui.GrayLineEditText
+                        android:id="@+id/self_msg_address"
+                        style="@style/GrayLineEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/self_msg_select_area"
+                        android:layout_marginTop="15dp"
+                        android:inputType="text"
+                        android:hint="请输入详细地址"
+                        android:visibility="gone"/>
+
+                </RelativeLayout>
+
+                <com.qzj.logistics.ui.GrayLineEditText
+                    android:id="@+id/self_msg_email"
+                    style="@style/GrayLineEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:drawableLeft="@mipmap/email_gray"
+                    android:inputType="textEmailAddress"
+                    android:hint="请输入Email" />
+
+                <com.qzj.logistics.ui.GrayLineEditText
+                    android:id="@+id/self_msg_post_code"
+                    style="@style/GrayLineEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:drawableLeft="@mipmap/pc_gray"
+                    android:inputType="number"
+                    android:maxLength="6"
+                    android:hint="请输入邮编"
+                    android:visibility="gone"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/self_msg_hint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:paddingLeft="10dp"
+                android:textColor="@color/common_red"/>
+
+            <RelativeLayout
+                android:id="@+id/self_msg_submit"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/common_btn_main_selector_r">
+
+                <TextView
+                    android:id="@+id/self_msg_btn_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:textColor="@color/common_white"
+                    android:textSize="16sp"
+                    android:text="确定修改"/>
+
+                <com.qzj.loading.DotsTextView
+                    xmlns:dots="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/self_msg_loading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_toRightOf="@+id/self_msg_btn_text"
+                    android:textSize="20sp"
+                    android:textColor="@color/common_white"
+                    dots:autoplay="false"
+                    dots:period="1000"
+                    android:visibility="gone"/>
+
+            </RelativeLayout>
+
+            <!--<Button
+                android:id="@+id/self_msg_cancel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/common_btn_cancel_selector_r"
+                android:text="取消"
+                android:textColor="@color/common_gray_808080"
+                android:textSize="16sp" />-->
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

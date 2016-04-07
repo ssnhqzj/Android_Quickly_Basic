@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/dgg_root"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/dgg_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:drawableRight="@mipmap/arrow_right"
+            android:drawablePadding="10dp"
+            android:text="收件人1"/>
+
+        <TextView
+            android:id="@+id/dgg_del"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/common_del_selector"/>
+
+        <CheckBox
+            android:id="@+id/dgg_setting_default"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="15dp"
+            android:layout_toLeftOf="@+id/dgg_del"
+            android:layout_centerVertical="true"
+            android:button="@null"
+            android:background="@drawable/common_bg_red_r_selector"
+            android:textColor="@color/red_white_selector"
+            android:text="默认地址"/>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/dgg_msg"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:gravity="center_vertical"
+        android:background="@color/common_white"
+        android:maxLines="2"
+        android:text="zhgnsan,123456"/>
+
+</LinearLayout>
